@@ -14,7 +14,7 @@ namespace CoDrive.DAL.Entities
         public string ModelName { get; set; }
         public DateTime FirstRegistrationDate { get; set; }
         public string? ImageUrl { get; set; }
-        public int Capacity { get; set; } 
+        public int Capacity { get; set; }  
 
         public ICollection<Journey> Journeys { get; set; }
 
