@@ -8,6 +8,6 @@ namespace CoDrive.DAL.Entities
 {
     internal interface IEntityPart
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; }
     }
 }
