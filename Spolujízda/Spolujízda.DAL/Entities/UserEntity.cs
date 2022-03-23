@@ -14,7 +14,7 @@ namespace coDrive.DAL.Entities
         string Name,
         string Surname,
         string? ImageUrl,
-        string? State
+        string State
     ) : IEntityPart
     {
         public ICollection<CarEntity> OwnedCars { get; init; } = new List<CarEntity>();
