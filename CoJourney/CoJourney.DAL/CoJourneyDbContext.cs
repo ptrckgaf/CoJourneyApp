@@ -1,0 +1,51 @@
+using CoDrive.DAL.Entities;
+using CoDrive.DAL.Seeds;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace CoDrive.DAL
+{
+    public class CoDriveDbContext : DbContext
+    {
+        private readonly bool _seedDemoData;
+
+        public CoDriveDbContext(DbContextOptions contextOptions, bool seedDemoData = false)
+            : base(contextOptions)
+        {
+            _seedDemoData = seedDemoData;
+        }
+
+        public DbSet<CarEntity> Cars => Set<CarEntity>();
+        public DbSet<CarEventEntity> Events => Set<CarEventEntity>();
+        public DbSet<InvitationEntity> Invitations => Set<InvitationEntity>();
+        public DbSet<JourneyEntity> Journeys => Set<JourneyEntity>();
+        public DbSet<UserEntity> Users => Set<UserEntity>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.Entity<CarEntity>()
+                .HasMany(i => i.Journeys)
+                .WithOne(i => i.Car)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CarEventEntity>()
+                .HasMany(i => i.Journeys)
+                .WithOne(i => i.CarEvent)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(i => i.OwnedCars)
+                .WithOne(i => i.Owner)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            if (_seedDemoData)
+            {
+                CarSeeds.Seed(modelBuilder);
+                CarEventSeeds.Seed(modelBuilder);
+                InvitationSeeds.Seed(modelBuilder);
+            }
+        }
+    }
+}
