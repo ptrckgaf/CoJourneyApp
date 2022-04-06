@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
-using CoDrive.DAL.Entities;
+using CoJourney.DAL.Entities;
 
-namespace coDrive.DAL.Entities
+namespace CoJourney.DAL.Entities
 {
     public record UserEntity(
         Guid Id,
