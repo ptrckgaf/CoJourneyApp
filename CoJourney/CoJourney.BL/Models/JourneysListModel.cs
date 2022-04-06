@@ -10,7 +10,6 @@ namespace CoJourney.BL.Models
         string TargetLocation,
         DateTime BeginTime) : ModelBase
     {
-
         public string StartLocation { get; set; } = StartLocation;
 
         public string TargetLocation { get; set; } = TargetLocation;

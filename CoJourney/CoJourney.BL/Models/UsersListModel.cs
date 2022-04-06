@@ -4,13 +4,10 @@ using CoJourney.DAL.Entities;
 
 namespace CoJourney.BL.Models
 {
-    public record UsersListModel(string Name) : ModelBase
+    public record UsersListModel(string Name, Guid ID) : ModelBase
     {
-
+        public Guid ID { get; set; } = ID;
         public string Name { get; set; } = Name;
-
-        public string? ImageUrl { get; set; }
-
         public class MapperProfile : Profile
         {
             public MapperProfile()

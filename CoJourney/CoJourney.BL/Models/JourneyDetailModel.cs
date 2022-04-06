@@ -31,7 +31,8 @@ namespace CoJourney.BL.Models
             public MapperProfile()
             {
                 CreateMap<JourneyEntity, JourneyDetailModel>()
-                    .ReverseMap();
+                    .ReverseMap()
+                    .ForMember(entity => entity.DriverId, expression => expression.Ignore());
             }
         }
     }

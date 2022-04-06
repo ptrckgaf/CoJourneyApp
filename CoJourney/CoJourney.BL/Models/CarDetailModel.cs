@@ -13,8 +13,7 @@ namespace CoJourney.BL.Models
         string Producer,
         string ModelName,
         DateTime FirstRegistrationDate,
-        int Capacity,
-        Guid OwnerId) : ModelBase
+        int Capacity) : ModelBase
     {
         public string Producer { get; set; } = Producer;
 
@@ -23,8 +22,6 @@ namespace CoJourney.BL.Models
         public DateTime FirstRegistrationDate { get; set; } = FirstRegistrationDate;
 
         public int Capacity { get; set; } = Capacity;
-
-        public Guid OwnerId { get; set; } = OwnerId;
 
         public string? ImageURl { get; set; }
 
