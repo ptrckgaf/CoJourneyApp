@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoJourney.DAL", "CoJourney.DAL\CoJourney.DAL.csproj", "{4A36E298-ED06-4ADD-B227-5DAE38715E5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoJourney.BL", "CoJourney.BL\CoJourney.BL.csproj", "{AC39FC8D-FD92-408F-A90E-5FC86BF72973}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4A36E298-ED06-4ADD-B227-5DAE38715E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A36E298-ED06-4ADD-B227-5DAE38715E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A36E298-ED06-4ADD-B227-5DAE38715E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC39FC8D-FD92-408F-A90E-5FC86BF72973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC39FC8D-FD92-408F-A90E-5FC86BF72973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC39FC8D-FD92-408F-A90E-5FC86BF72973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC39FC8D-FD92-408F-A90E-5FC86BF72973}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

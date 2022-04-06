@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoJourney.DAL.Entities
+namespace CoJourney.BL.Models
 {
-    internal interface IEntityPart
+    internal class CarEventDetailModel
     {
-        public Guid Id { get; }
     }
 }
