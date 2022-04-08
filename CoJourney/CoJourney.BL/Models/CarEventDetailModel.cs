@@ -12,8 +12,7 @@ namespace CoJourney.BL.Models
     public record CarEventDetailModel(
         DateTime BeginTime,
         DateTime EndTime,
-        string TargetLocation
-        )
+        string TargetLocation) : ModelBase
     {
         public DateTime BeginTime { get; set; } = BeginTime;
 

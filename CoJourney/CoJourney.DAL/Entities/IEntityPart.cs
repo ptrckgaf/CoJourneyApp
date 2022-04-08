@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CoJourney.DAL.Entities
 {
-    internal interface IEntityPart
+    public interface IEntityPart
     {
-        public Guid Id { get; }
+        Guid Id { get; }
     }
 }
