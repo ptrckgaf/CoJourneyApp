@@ -40,6 +40,18 @@ namespace CoJourney.DAL
                 .WithOne(i => i.Owner)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<InvitationEntity>()
+                .HasOne(s => s.SenderUser)
+                .WithMany(g => g.SentInvitations);
+
+            modelBuilder.Entity<InvitationEntity>()
+                .HasOne(s => s.ReceiverUser)
+                .WithMany(g => g.ReceivedInvitations);
+
+            modelBuilder.Entity<InvitationEntity>()
+                .HasOne(s => s.Journey)
+                .WithMany(g => g.Invitation);
+
             if (_seedDemoData)
             {
                 CarSeeds.Seed(modelBuilder);
