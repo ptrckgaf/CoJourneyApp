@@ -7,7 +7,7 @@ namespace CoJourney.DAL.Seeds;
 public static class InvitationSeeds
 {
     public static readonly InvitationEntity Invitation1 = new(
-        Id: Guid.Parse(input: "827312d8f2a5adc8288ead8c7a637d82"),
+        Id: Guid.Parse(input: "92d5c8db-365f-47e4-b20b-d7c82dce6704"),
         Accepted: null,
         SenderUserId: UserSeeds.User1.Id,
         ReceiverId: UserSeeds.User2.Id,
