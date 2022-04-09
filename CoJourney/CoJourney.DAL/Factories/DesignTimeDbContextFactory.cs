@@ -13,7 +13,7 @@ namespace CoJourney.DAL.Factories
             DbContextOptionsBuilder<CoJourneyDbContext> builder = new();
             builder.UseSqlServer(
                 @"Data Source=(LocalDB)\MSSQLLocalDB;
-                Initial Catalog = CookBook;
+                Initial Catalog = CoJourney;
                 MultipleActiveResultSets = True;
                 Integrated Security = True; ");
 
