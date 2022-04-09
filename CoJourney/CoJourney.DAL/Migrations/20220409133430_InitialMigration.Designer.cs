@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoJourney.DAL.Migrations
 {
     [DbContext(typeof(CoJourneyDbContext))]
-    [Migration("20220409130910_InitialMigration")]
+    [Migration("20220409133430_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

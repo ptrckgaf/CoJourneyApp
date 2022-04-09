@@ -69,6 +69,8 @@ namespace CoJourney.DAL
                 CarSeeds.Seed(modelBuilder);
                 CarEventSeeds.Seed(modelBuilder);
                 InvitationSeeds.Seed(modelBuilder);
+                JourneySeeds.Seed(modelBuilder);
+                UserSeeds.Seed(modelBuilder);
             }
         }
     }
