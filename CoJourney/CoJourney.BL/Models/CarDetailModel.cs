@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 using CoJourney.DAL.Entities;
 
+
 namespace CoJourney.BL.Models
 {
     public record CarDetailModel(
@@ -33,5 +34,6 @@ namespace CoJourney.BL.Models
                     .ReverseMap();
             }
         }
+        public static CarDetailModel Empty => new(string.Empty, string.Empty, default, 0);
     }
 }
