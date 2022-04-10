@@ -14,10 +14,12 @@ namespace CoJourney.BL.Tests
     public class CarFacadeTests : CRUDFacadeTestsBase
     {
         private readonly UsersFacade _facadeSUT;
+        private readonly CarFacade _facadeCarSUT;
 
         public CarFacadeTests(ITestOutputHelper output) : base(output)
         {
             _facadeSUT = new UsersFacade(UnitOfWorkFactory, Mapper);
+            _facadeCarSUT = new CarFacade(UnitOfWorkFactory, Mapper);
         }
 
         [Fact]
@@ -48,6 +50,47 @@ namespace CoJourney.BL.Tests
             //Assert
             FixCarIds(user, returnedUser);
             DeepAssert.Equal(user, returnedUser);
+        }
+
+        [Fact]
+        public async Task UpdateCar_InsertOrUpdate_CarrAdded()
+        {
+            //Arrange
+            var user = new UsersDetailModel
+            (
+                Name: "Abraham",
+                Surname: "LoutColn",
+                State: "Nemam cas ani penize"
+            )
+            {
+                OwnedCars =
+                {
+                    new CarDetailModel(
+                        Producer:CarSeeds.Picaso.Producer,
+                        ModelName:CarSeeds.Picaso.ModelName,
+                        FirstRegistrationDate:CarSeeds.Picaso.FirstRegistrationDate,
+                        Capacity:CarSeeds.Picaso.Capacity)
+                }
+            };
+            var returnedUser = await _facadeSUT.SaveAsync(user);
+            FixCarIds(user, returnedUser);
+
+            var car = await _facadeCarSUT.GetAsync(returnedUser.OwnedCars[0].Id);
+            car.Producer = "Lamborghini";
+            car.ModelName = "Aventador";
+            car.FirstRegistrationDate = new DateTime(2020, 10, 15);
+            car.Capacity = 2;
+
+
+            //Act
+            await _facadeCarSUT.SaveAsync(car);
+
+            //Assert
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            var CarFromDb = await dbxAssert.Cars.SingleAsync(i => i.Id == car.Id);
+            DeepAssert.Equal(car, Mapper.Map<CarDetailModel>(CarFromDb));
+
+          
         }
 
         private static void FixCarIds(UsersDetailModel expectedModel, UsersDetailModel returnedModel)
