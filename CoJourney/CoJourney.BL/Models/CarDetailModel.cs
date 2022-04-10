@@ -31,7 +31,10 @@ namespace CoJourney.BL.Models
             public MapperProfile()
             {
                 CreateMap<CarEntity, CarDetailModel>()
-                    .ReverseMap();
+                    .ReverseMap()
+                    .ForMember(entity => entity.Owner, expression => expression.Ignore())
+                    .ForMember(entity => entity.OwnerId, expression => expression.Ignore())
+                    .ForMember(entity => entity.Journeys, expression => expression.Ignore());
             }
         }
         public static CarDetailModel Empty => new(string.Empty, string.Empty, default, 0);

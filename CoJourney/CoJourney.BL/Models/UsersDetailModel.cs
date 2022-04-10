@@ -17,7 +17,13 @@ namespace CoJourney.BL.Models
         {
             public MapperProfile()
             {
-                CreateMap<UserEntity, UsersDetailModel>();
+                CreateMap<UserEntity, UsersDetailModel>()
+                    .ReverseMap()
+                    .ForMember(entity => entity.OwnedCars, expression => expression.Ignore())
+                    .ForMember(entity => entity.DrivingJourneys, expression => expression.Ignore())
+                    .ForMember(entity => entity.CoRidingJourneys, expression => expression.Ignore())
+                    .ForMember(entity => entity.SentInvitations, expression => expression.Ignore())
+                    .ForMember(entity => entity.ReceivedInvitations, expression => expression.Ignore());
             }
         }
     }
