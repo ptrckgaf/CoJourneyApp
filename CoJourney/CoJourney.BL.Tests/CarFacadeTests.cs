@@ -30,7 +30,10 @@ namespace CoJourney.BL.Tests
                 ModelName: "3008",
                 FirstRegistrationDate: new DateTime(2019, 2, 22, 14, 0, 0),
                 Capacity: 5
-            );
+            )
+            {
+                OwnerId = UserSeeds.Felos.Id
+            };
 
             //Act
             var returnedModel = await _facadeSUT.SaveAsync(model);

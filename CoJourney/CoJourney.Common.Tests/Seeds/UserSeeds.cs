@@ -32,14 +32,6 @@ public static class UserSeeds
 
     );
 
-    public static readonly UserEntity EmptyUserEntity= new(
-        default,
-        default,
-        default,
-        default,
-        default
-
-    );
 
     //To ensure that no tests reuse these clones for non-idempotent operations
     public static readonly UserEntity UserUpdate = Patejdl with { Id = Guid.Parse("9c4cbbb3-e88f-420d-a931-650faeabf250") };

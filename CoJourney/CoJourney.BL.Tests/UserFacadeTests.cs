@@ -52,7 +52,7 @@ namespace CoJourney.BL.Tests
         [Fact]
         public async Task GetById_NonExisting()
         {
-            var ingredient = await _facadeSUT.GetAsync(UserSeeds.EmptyUserEntity.Id);
+            var ingredient = await _facadeSUT.GetAsync(UserSeeds.EmptyUser.Id);
 
             Assert.Null(ingredient);
         }

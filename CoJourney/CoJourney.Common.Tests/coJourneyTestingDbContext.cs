@@ -21,6 +21,7 @@ namespace CoJourney.Common.Tests
             if (_seedTestingData)
             {
                 UserSeeds.Seed(modelBuilder);
+                CarSeeds.Seed(modelBuilder);
                 //ADD seeds TODO
             }
         }
