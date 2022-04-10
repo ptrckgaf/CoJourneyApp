@@ -111,5 +111,35 @@ namespace CoJourney.BL.Tests
             var userFromDb = await dbxAssert.Users.SingleAsync(i => i.Id == user.Id);
             DeepAssert.Equal(user, Mapper.Map<UsersDetailModel>(userFromDb));
         }
+
+        [Fact]
+        public async Task AddCar()
+        {
+            //Arrange
+            var user = new UsersDetailModel
+            (
+                Name: "Abraham",
+                Surname: "LoutColn",
+                State: "Nemam cas ani penize"
+            )
+            {
+                OwnedCars =
+                {
+                    new CarDetailModel(
+                        Producer:CarSeeds.Picaso.Producer,
+                        ModelName:CarSeeds.Picaso.ModelName,
+                        FirstRegistrationDate:CarSeeds.Picaso.FirstRegistrationDate,
+                        Capacity:CarSeeds.Picaso.Capacity)
+                }
+            };
+
+            //Act
+            var returnedUser = await _facadeSUT.SaveAsync(user);
+
+            //Assert
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            var userFromDb = await dbxAssert.Users.SingleAsync(i => i.Id == user.Id);
+            DeepAssert.Equal(user, Mapper.Map<UsersDetailModel>(userFromDb));
+        }
     } 
 }

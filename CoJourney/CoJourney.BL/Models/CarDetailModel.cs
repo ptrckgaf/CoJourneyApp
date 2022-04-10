@@ -15,7 +15,7 @@ namespace CoJourney.BL.Models
         string ModelName,
         DateTime FirstRegistrationDate,
         int Capacity
-    ) : ModelBase
+        ) : ModelBase
     {
         public string Producer { get; set; } = Producer;
 
@@ -24,7 +24,7 @@ namespace CoJourney.BL.Models
         public DateTime FirstRegistrationDate { get; set; } = FirstRegistrationDate;
 
         public int Capacity { get; set; } = Capacity;
-        public  Guid OwnerId { get; set; }
+        public  Guid OwnerId = Guid.Empty;
 
         public string? ImageURl { get; set; }
 
@@ -34,6 +34,8 @@ namespace CoJourney.BL.Models
             {
                 CreateMap<CarEntity, CarDetailModel>()
                     .ReverseMap()
+                    .ForMember(entity => entity.Owner, expression => expression.Ignore())
+                    .ForMember(entity => entity.OwnerId, expression => expression.Ignore())
                     .ForMember(entity => entity.Journeys, expression => expression.Ignore());
             }
         }

@@ -13,6 +13,7 @@ namespace CoJourney.BL.Models
         public string Surname { get; set; } = Surname;
         public string? ImageUrl { get; set; }
         public string State { get; set; } = State;
+        public List<CarDetailModel> OwnedCars { get; init; } = new();
         public class MapperProfile : Profile
         {
             public MapperProfile()

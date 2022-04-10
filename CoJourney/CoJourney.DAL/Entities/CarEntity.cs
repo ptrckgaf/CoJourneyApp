@@ -20,7 +20,5 @@ namespace CoJourney.DAL.Entities
     {
         public UserEntity? Owner { get; init; }
         public ICollection<JourneyEntity> Journeys { get; init; } = new List<JourneyEntity>();
-        //Automapper requires parameter less constructor for collection synchronization for now
-
     }
 }
