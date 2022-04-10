@@ -14,7 +14,7 @@ public static class UserSeeds
 
         );
 
-    public static readonly UserEntity UserTestEntity1 = new(
+    public static readonly UserEntity Patejdl = new(
         Id: Guid.Parse(input: "cb198142-5c35-4773-b62b-a11e98c50143"),
         Name: "Vaso",
         Surname: "Patejdl",
@@ -23,7 +23,7 @@ public static class UserSeeds
 
     );
 
-    public static readonly UserEntity UserTestEntity2 = new(
+    public static readonly UserEntity Felos = new(
         Id: Guid.Parse(input: "cb198142-5c35-4773-b62b-a11e98c50144"),
         Name: "Ivan",
         Surname: "Felos",
@@ -32,15 +32,24 @@ public static class UserSeeds
 
     );
 
-    //To ensure that no tests reuse these clones for non-idempotent operations
-    public static readonly UserEntity UserUpdate = UserTestEntity1 with { Id = Guid.Parse("9c4cbbb3-e88f-420d-a931-650faeabf250") };
-    public static readonly UserEntity UserDelete = UserTestEntity1 with { Id = Guid.Parse("0261f979-575c-4c4b-879c-3778b868bdfd") };
+    public static readonly UserEntity EmptyUserEntity= new(
+        default,
+        default,
+        default,
+        default,
+        default
 
-    
+    );
+
+    //To ensure that no tests reuse these clones for non-idempotent operations
+    public static readonly UserEntity UserUpdate = Patejdl with { Id = Guid.Parse("9c4cbbb3-e88f-420d-a931-650faeabf250") };
+    public static readonly UserEntity UserDelete = Patejdl with { Id = Guid.Parse("0261f979-575c-4c4b-879c-3778b868bdfd") };
+
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasData(
             UserUpdate,
-            UserDelete);
+            UserDelete,
+            Felos);
     }
 }
