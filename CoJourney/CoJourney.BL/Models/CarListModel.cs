@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using AutoMapper;
 using CoJourney.DAL.Entities;
 
-namespace Cojourney.BL.Models
+namespace CoJourney.BL.Models
 {
     public record CarListModel(
         string Producer,
         string ModelName,
-        DateTime FirstRegistrationDate,
         int Capacity) : ModelBase
     {
 
@@ -16,9 +15,7 @@ namespace Cojourney.BL.Models
 
         public string ModelName { get; set; } = ModelName;
 
-        public DateTime FirstRegistrationDate { get; set } = FirstRegistrationDate;
-
-        public int Capacity { get; set } = Capacity;
+        public int Capacity { get; set; } = Capacity;
 
         public string? ImageURl { get; set; } 
 

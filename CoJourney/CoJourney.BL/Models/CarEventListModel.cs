@@ -5,22 +5,26 @@ using CoJourney.DAL.Entities;
 
 namespace CoJourney.BL.Models
 {
-    public record JourneyListModel(
-        string StartLocation,
+    public record CarEventListModel(
+        string Name,
         string TargetLocation,
-        DateTime BeginTime) : ModelBase
+        DateTime BeginTime,
+        DateTime EndTime) : ModelBase
     {
-        public string StartLocation { get; set; } = StartLocation;
+
+        public string Name { get; set; } = Name;
 
         public string TargetLocation { get; set; } = TargetLocation;
 
         public DateTime BeginTime { get; set; } = BeginTime;
 
+        public DateTime EndTime { get; set; } = EndTime;
+
         public class MapperProfile : Profile
         {
             public MapperProfile()
             {
-                CreateMap<JourneyEntity, JourneyListModel>();
+                CreateMap<CarEventEntity, CarEventListModel>();
             }
         }
     }

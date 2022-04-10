@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoDrive.DAL.Entities
+namespace CoJourney.DAL.Entities
 {
     public record CarEventEntity(
         Guid Id,

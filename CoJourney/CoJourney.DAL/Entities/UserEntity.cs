@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
-//using coDrive.DAL.Entities;
+using CoJourney.DAL.Entities;
 
-namespace CoDrive.DAL.Entities
+namespace CoJourney.DAL.Entities
 {
     public record UserEntity(
         Guid Id,
@@ -15,7 +15,6 @@ namespace CoDrive.DAL.Entities
         string Surname,
         string? ImageUrl,
         string State
-
     ) : IEntityPart
     {
         public ICollection<CarEntity> OwnedCars { get; init; } = new List<CarEntity>();

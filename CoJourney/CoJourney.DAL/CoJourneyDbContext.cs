@@ -1,15 +1,15 @@
-using CoDrive.DAL.Entities;
-using CoDrive.DAL.Seeds;
+﻿using CoJourney.DAL.Entities;
+using CoJourney.DAL.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace CoDrive.DAL
+namespace CoJourney.DAL
 {
-    public class CoDriveDbContext : DbContext
+    public class CoJourneyDbContext : DbContext
     {
         private readonly bool _seedDemoData;
 
-        public CoDriveDbContext(DbContextOptions contextOptions, bool seedDemoData = false)
+        public CoJourneyDbContext(DbContextOptions contextOptions, bool seedDemoData = false)
             : base(contextOptions)
         {
             _seedDemoData = seedDemoData;
@@ -24,27 +24,53 @@ namespace CoDrive.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             modelBuilder.Entity<CarEntity>()
                 .HasMany(i => i.Journeys)
                 .WithOne(i => i.Car)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<CarEventEntity>()
                 .HasMany(i => i.Journeys)
                 .WithOne(i => i.CarEvent)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserEntity>()
                 .HasMany(i => i.OwnedCars)
                 .WithOne(i => i.Owner)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(i => i.DrivingJourneys)
+                .WithOne(i => i.Driver)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(i => i.CoRidingJourneys)
+                .WithMany(i => i.CoRiders);
+
+            modelBuilder.Entity<InvitationEntity>()
+                .HasOne(s => s.SenderUser)
+                .WithMany(g => g.SentInvitations)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<InvitationEntity>()
+                .HasOne(s => s.ReceiverUser)
+                .WithMany(g => g.ReceivedInvitations)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<InvitationEntity>()
+                .HasOne(s => s.Journey)
+                .WithMany(g => g.Invitation)
+                .OnDelete(DeleteBehavior.Cascade);
 
             if (_seedDemoData)
             {
                 CarSeeds.Seed(modelBuilder);
                 CarEventSeeds.Seed(modelBuilder);
                 InvitationSeeds.Seed(modelBuilder);
+                JourneySeeds.Seed(modelBuilder);
+                UserSeeds.Seed(modelBuilder);
             }
         }
     }

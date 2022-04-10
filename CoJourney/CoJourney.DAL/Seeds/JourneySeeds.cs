@@ -1,13 +1,13 @@
 using System;
-using CoDrive.DAL.Entities;
+using CoJourney.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoDrive.DAL.Seeds;
+namespace CoJourney.DAL.Seeds;
 
 public static class JourneySeeds
 {
     public static readonly JourneyEntity Journey1 = new(
-        Id: Guid.Parse(input: "54417849196c18b16616616233c5f5c7"),
+        Id: Guid.Parse(input: "cc256811-01d9-4011-9d38-65c969a66374"),
         StartLocation: "Brno",
         TargetLocation: CarEventSeeds.Event1.TargetLocation,
         BeginTime: CarEventSeeds.Event1.BeginTime,
