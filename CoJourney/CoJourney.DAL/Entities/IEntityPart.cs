@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoDrive.DAL.Entities
+namespace CoJourney.DAL.Entities
 {
-    internal interface IEntityPart
+    public interface IEntityPart
     {
-        public Guid Id { get; }
+        Guid Id { get; }
     }
 }
