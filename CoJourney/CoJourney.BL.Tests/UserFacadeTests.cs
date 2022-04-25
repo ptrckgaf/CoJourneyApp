@@ -86,7 +86,7 @@ namespace CoJourney.BL.Tests
             DeepAssert.Equal(user, Mapper.Map<UsersDetailModel>(userFromDb));
         }
         [Fact]
-        public async Task SeededFelos_InsertOrUpdate_UserUpdated()
+        public async Task SeededFelos_InsertOrUpdate_UserUpdateCarAdd()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -110,12 +110,12 @@ namespace CoJourney.BL.Tests
             user.State += " - UPDATED";
             user.ImageUrl += "https://www.iconsdb.com/icons/preview/red/new-xxl.png";
             
+            
             //Act
-            await _facadeSUT.SaveAsync(user);
-
+            var returnedUser =  await _facadeSUT.SaveAsync(user);
+            FixCarIds(user, returnedUser);
             //Assert
-            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-            var userFromDb = await dbxAssert.Users.SingleAsync(i => i.Id == user.Id);
+            var userFromDb = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
             DeepAssert.Equal(user, Mapper.Map<UsersDetailModel>(userFromDb));
         }
     } 

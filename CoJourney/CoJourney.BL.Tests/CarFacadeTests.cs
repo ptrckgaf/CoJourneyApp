@@ -2,7 +2,6 @@
 using Xunit;
 using Xunit.Abstractions;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using CoJourney.BL.Models;
 using CoJourney.Common.Tests;
@@ -302,28 +301,6 @@ namespace CoJourney.BL.Tests
             CarDetailModel car = await _facadeCarSUT.GetAsync(returnedUser.OwnedCars[0].Id) ?? CarDetailModel.Empty;
             
             await Assert.ThrowsAsync<InvalidOperationException>(() => dbxAssert.Cars.SingleAsync(car => car.Id == car.Id));
-        }
-
-
-        private static void FixCarIds(UsersDetailModel expectedModel, UsersDetailModel returnedModel)
-        {
-            returnedModel.Id = expectedModel.Id;
-
-            foreach (var carDetailModel in returnedModel.OwnedCars)
-            {
-                var carDetailModelExp = expectedModel.OwnedCars.FirstOrDefault(i =>
-                    i.Producer == carDetailModel.Producer
-                    && i.ModelName == carDetailModel.ModelName
-                    && i.ImageURl == carDetailModel.ImageURl
-                    && i.FirstRegistrationDate == carDetailModel.FirstRegistrationDate
-                    && i.Capacity == carDetailModel.Capacity);
-
-                if (carDetailModelExp != null)
-                {
-                    carDetailModelExp.Id = carDetailModel.Id;
-                    carDetailModelExp.OwnerId = carDetailModel.OwnerId;
-                }
-            }
         }
     } 
 }
