@@ -23,7 +23,7 @@ namespace CoJourney.BL.Tests
         }
 
         [Fact]
-        public async Task CreateNewUserAndAddCar_InsertOrUpdate_CarrAdded()
+        public async Task AddNewCar_ExistingUser_InsertOrUpdate_CarrAdded()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -82,10 +82,10 @@ namespace CoJourney.BL.Tests
             };
             var returnedUser = await _facadeSUT.SaveAsync(user);
             FixCarIds(user, returnedUser);
-            
+
             CarDetailModel car1 = await _facadeCarSUT.GetAsync(returnedUser.OwnedCars[0].Id) ?? CarDetailModel.Empty;
             CarDetailModel car2 = await _facadeCarSUT.GetAsync(returnedUser.OwnedCars[1].Id) ?? CarDetailModel.Empty;
-       
+
 
             //Act
             await _facadeCarSUT.SaveAsync(car1);
@@ -122,7 +122,7 @@ namespace CoJourney.BL.Tests
                 }
             };
             var returnedUser = await _facadeSUT.SaveAsync(user);
-            
+
             FixCarIds(user, returnedUser);
 
             CarDetailModel car = await _facadeCarSUT.GetAsync(returnedUser.OwnedCars[0].Id) ?? CarDetailModel.Empty;
@@ -140,7 +140,7 @@ namespace CoJourney.BL.Tests
             var CarFromDb = await dbxAssert.Cars.SingleAsync(i => i.Id == car.Id);
             DeepAssert.Equal(car, Mapper.Map<CarDetailModel>(CarFromDb));
 
-          
+
         }
 
         [Fact]
@@ -184,10 +184,126 @@ namespace CoJourney.BL.Tests
             //Assert
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             //check if the first car is deleted and second is stored still
-            await Assert.ThrowsAsync<InvalidOperationException> (() => dbxAssert.Cars.SingleAsync(i => i.Id == car1.Id));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => dbxAssert.Cars.SingleAsync(i => i.Id == car1.Id));
             var CarFromDb = await dbxAssert.Cars.SingleAsync(i => i.Id == car2.Id);
             DeepAssert.Equal(car2, Mapper.Map<CarDetailModel>(CarFromDb));
         }
+
+        [Fact]
+        public async Task GetCarModelnameById_CarExists()
+        {
+            //Arrange
+            var user = new UsersDetailModel
+            (
+                Name: "Abraham",
+                Surname: "LoutColn",
+                State: "Nemam cas ani penize"
+            )
+            {
+                OwnedCars =
+                {
+                        new CarDetailModel(
+                        Producer:CarSeeds.Golf.Producer,
+                        ModelName:CarSeeds.Golf.ModelName,
+                        FirstRegistrationDate:CarSeeds.Golf.FirstRegistrationDate,
+                        Capacity:CarSeeds.Golf.Capacity),
+
+                        new CarDetailModel(
+                        Producer:CarSeeds.Punto.Producer,
+                        ModelName:CarSeeds.Punto.ModelName,
+                        FirstRegistrationDate:CarSeeds.Punto.FirstRegistrationDate,
+                        Capacity:CarSeeds.Punto.Capacity)
+
+                }
+
+            };
+            var returnedUser = await _facadeSUT.SaveAsync(user);
+            FixCarIds(user, returnedUser);
+
+            //Act
+            CarDetailModel car = await _facadeCarSUT.GetAsync(returnedUser.OwnedCars[1].Id) ?? CarDetailModel.Empty;
+            //Assert
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            var CarFromDb = await dbxAssert.Cars.SingleAsync(i => i.Id == car.Id);
+            DeepAssert.Equal(car.ModelName, Mapper.Map<CarDetailModel>(CarFromDb).ModelName);
+        }
+        [Fact]
+        public async Task GetCarById_CarExists()
+        {
+            //Arrange
+            var user = new UsersDetailModel
+            (
+                Name: "Abraham",
+                Surname: "LoutColn",
+                State: "Nemam cas ani penize"
+            )
+            {
+                OwnedCars =
+                {
+                        new CarDetailModel(
+                        Producer:CarSeeds.Golf.Producer,
+                        ModelName:CarSeeds.Golf.ModelName,
+                        FirstRegistrationDate:CarSeeds.Golf.FirstRegistrationDate,
+                        Capacity:CarSeeds.Golf.Capacity),
+
+                        new CarDetailModel(
+                        Producer:CarSeeds.Punto.Producer,
+                        ModelName:CarSeeds.Punto.ModelName,
+                        FirstRegistrationDate:CarSeeds.Punto.FirstRegistrationDate,
+                        Capacity:CarSeeds.Punto.Capacity)
+
+                }
+
+            };
+            var returnedUser = await _facadeSUT.SaveAsync(user);
+            FixCarIds(user, returnedUser);
+
+            //Act
+            CarDetailModel car = await _facadeCarSUT.GetAsync(returnedUser.OwnedCars[1].Id) ?? CarDetailModel.Empty;
+            //Assert
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            var CarFromDb = await dbxAssert.Cars.SingleAsync(i => i.Id == car.Id);
+            DeepAssert.Equal(car, Mapper.Map<CarDetailModel>(CarFromDb));
+        }
+
+        [Fact]
+        public async Task GetCarModelnameById_CarNotExists()
+        {
+            //Arrange
+            var user = new UsersDetailModel
+            (
+                Name: "Abraham",
+                Surname: "LoutColn",
+                State: "Nemam cas ani penize"
+            )
+            {
+                OwnedCars =
+                {
+                        new CarDetailModel(
+                        Producer:CarSeeds.Golf.Producer,
+                        ModelName:CarSeeds.Golf.ModelName,
+                        FirstRegistrationDate:CarSeeds.Golf.FirstRegistrationDate,
+                        Capacity:CarSeeds.Golf.Capacity),
+
+                        new CarDetailModel(
+                        Producer:CarSeeds.Punto.Producer,
+                        ModelName:CarSeeds.Punto.ModelName,
+                        FirstRegistrationDate:CarSeeds.Punto.FirstRegistrationDate,
+                        Capacity:CarSeeds.Punto.Capacity)
+
+                }
+
+            };
+            var returnedUser = await _facadeSUT.SaveAsync(user);
+            FixCarIds(user, returnedUser);
+
+            //Act and Assert
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            CarDetailModel car = await _facadeCarSUT.GetAsync(returnedUser.OwnedCars[0].Id) ?? CarDetailModel.Empty;
+            
+            await Assert.ThrowsAsync<InvalidOperationException>(() => dbxAssert.Cars.SingleAsync(car => car.Id == car.Id));
+        }
+
 
         private static void FixCarIds(UsersDetailModel expectedModel, UsersDetailModel returnedModel)
         {
