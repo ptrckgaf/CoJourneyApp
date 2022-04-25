@@ -95,14 +95,21 @@ namespace CoJourney.BL.Tests
                 Surname: UserSeeds.Felos.Surname,
                 State: UserSeeds.Felos.State
             )
-            {
+            {   
+                OwnedCars = {
+                    new CarDetailModel(
+                        Producer:CarSeeds.Picaso.Producer,
+                        ModelName:CarSeeds.Picaso.ModelName,
+                        FirstRegistrationDate:CarSeeds.Picaso.FirstRegistrationDate,
+                        Capacity:CarSeeds.Picaso.Capacity)
+                },
                 Id = UserSeeds.Felos.Id
             };
             user.Name += " - UPDATED";
             user.Surname += " - UPDATED";
             user.State += " - UPDATED";
             user.ImageUrl += "https://www.iconsdb.com/icons/preview/red/new-xxl.png";
-
+            
             //Act
             await _facadeSUT.SaveAsync(user);
 
