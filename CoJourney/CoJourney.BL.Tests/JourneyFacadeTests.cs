@@ -60,7 +60,7 @@ namespace CoJourney.BL.Tests
         }
         
         [Fact]
-        public async Task UpdateJourney_InsertOrUpdate_JourneyAdded()
+        public async Task UpdateJourney_InsertOrUpdate_JourneyAddedUpdated()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -155,7 +155,7 @@ namespace CoJourney.BL.Tests
         }
         
         [Fact]
-        public async Task GetJourneyTargetById_JourneyExists_LoadOK()
+        public async Task GetJourneyTargetById_JourneyExists_LoadOKNoThrow()
         {
             //Arrange
             var user = new UsersDetailModel
