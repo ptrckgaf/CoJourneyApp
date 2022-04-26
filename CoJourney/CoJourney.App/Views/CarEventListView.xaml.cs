@@ -18,9 +18,9 @@ namespace CoJourney.App.Views
     /// <summary>
     /// Interaction logic for CarEvenetListView.xaml
     /// </summary>
-    public partial class CarEvenetListView : UserControl
+    public partial class CarEventListView : UserControlBase
     {
-        public CarEvenetListView()
+        public CarEventListView()
         {
             InitializeComponent();
         }
