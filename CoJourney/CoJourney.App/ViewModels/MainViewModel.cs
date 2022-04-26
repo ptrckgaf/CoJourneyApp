@@ -16,14 +16,35 @@ namespace CoJourney.App.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public MainViewModel()
+        public MainViewModel(IUserListViewModel userListViewModel, ICarListViewModel carListViewModel, 
+            IJourneyListViewModel journeyListViewModel, ICarEventListViewModel carEventListViewModel)
         {
+            UserListViewModel = userListViewModel;
+            CarListViewModel = carListViewModel;
+            JourneyListViewModel = journeyListViewModel;
+            CarEventListViewModel = carEventListViewModel; 
+
+            JourneyListViewControl.DataContext = JourneyListViewModel;
+            UserListViewControl.DataContext = UserListViewModel;
+            CarListViewControl.DataContext = CarListViewModel;
+            CarEventListViewControl.DataContext = CarEventListViewModel;
+
             SetListToUser = new RelayCommand(SetUserListView);
             SetListToCar = new RelayCommand(SetCarListView);
             SetListToJoureny = new RelayCommand(SetJourneyListView);
             SetListToCarEvent = new RelayCommand(SetCarEventListView);
+
+            
         }
 
+        public UserListView UserListViewControl = new ();
+        public CarListView CarListViewControl = new ();
+        public JourneyListView JourneyListViewControl = new();
+        public CarEventListView CarEventListViewControl = new();
+        public IUserListViewModel UserListViewModel { get; }
+        public ICarListViewModel CarListViewModel { get; }
+        public IJourneyListViewModel JourneyListViewModel { get; }
+        public ICarEventListViewModel CarEventListViewModel { get; }
         public ICommand SetListToUser { get; }
         public ICommand SetListToCar { get; }
         public ICommand SetListToJoureny { get; }
@@ -38,27 +59,20 @@ namespace CoJourney.App.ViewModels
                 OnPropertyChanged();
             }
         }
-        private void SetUserListView()
-        {
-            ListControl = new UserListView();
-            ListControl.DataContext = new UserListViewModel();
-            //UserListViewModelControl.Users.Add(new UsersListModel("albrech", ""));
-        }
+        private void SetUserListView() => ListControl = UserListViewControl;
+        
 
         private void SetCarListView()
         {
-            ListControl = new CarListView();
-            ListControl.DataContext = new CarListViewModel();
+            ListControl = CarListViewControl;
         }
         private void SetJourneyListView()
         {
-            ListControl = new JourneyListView();
-            ListControl.DataContext = new JourneyListViewModel();
+            ListControl = JourneyListViewControl;
         }
         private void SetCarEventListView()
         {
-            ListControl = new CarEvenetListView();
-            ListControl.DataContext = new CarEventListViewModel();
+            ListControl = CarEventListViewControl;
         }
     }
 }

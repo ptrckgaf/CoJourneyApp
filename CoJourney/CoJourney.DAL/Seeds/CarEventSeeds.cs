@@ -8,8 +8,8 @@ public static class CarEventSeeds
 {
     public static readonly CarEventEntity Event1 = new(
         Id: Guid.Parse(input: "fae16bb7-5b84-4445-aea8-3f42218d52b2"),
-        BeginTime: DateTime.Parse("26/4/2022 4:30 PM", System.Globalization.CultureInfo.InvariantCulture),
-        EndTime: DateTime.Parse("26/4/2022 5:45 PM", System.Globalization.CultureInfo.InvariantCulture),
+        BeginTime: new DateTime(2022,4,26,16,30,0),
+        EndTime: new DateTime(2022,4,26,17,45,0),
         Name: "Pouť na Velehrad",
         TargetLocation: "Velehrad"
     );

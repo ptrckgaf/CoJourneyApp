@@ -18,7 +18,7 @@ namespace CoJourney.App.Views
     /// <summary>
     /// Interaction logic for JourneyListView.xaml
     /// </summary>
-    public partial class JourneyListView : UserControl
+    public partial class JourneyListView : UserControlBase
     {
         public JourneyListView()
         {
