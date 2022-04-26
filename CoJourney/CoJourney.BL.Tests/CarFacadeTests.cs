@@ -52,7 +52,7 @@ namespace CoJourney.BL.Tests
         }
 
         [Fact]
-        public async Task InsertTwoExistingUser_Car_InsertOrUpdate_CarrAdded()
+        public async Task InsertTwoCars_ExistingUser_InsertOrUpdate_2CarsAdded()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -99,7 +99,7 @@ namespace CoJourney.BL.Tests
         }
 
         [Fact]
-        public async Task UpdateCar_InsertOrUpdate_CarrAdded()
+        public async Task UpdateCar_InsertOrUpdate_CarrAddedUpdated()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -141,7 +141,7 @@ namespace CoJourney.BL.Tests
         }
 
         [Fact]
-        public async Task DeleteExistingCar_Delete_CarrAdded()
+        public async Task DeleteExistingCar_Delete_CarDeleted()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -187,7 +187,7 @@ namespace CoJourney.BL.Tests
         }
 
         [Fact]
-        public async Task GetCarModelnameById_CarExists()
+        public async Task GetCarModelnameById_CarExists_NoThrow()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -225,7 +225,7 @@ namespace CoJourney.BL.Tests
             DeepAssert.Equal(car.ModelName, Mapper.Map<CarDetailModel>(CarFromDb).ModelName);
         }
         [Fact]
-        public async Task GetCarById_CarExists()
+        public async Task GetCarById_CarExists_LoadOK()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -264,7 +264,7 @@ namespace CoJourney.BL.Tests
         }
 
         [Fact]
-        public async Task GetCarModelnameById_CarNotExists()
+        public async Task GetCarModelnameById_CarNotExists_Throws()
         {
             //Arrange
             var user = new UsersDetailModel
