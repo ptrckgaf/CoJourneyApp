@@ -32,8 +32,8 @@ namespace CoJourney.App.ViewModels
         public async Task LoadAsync()
         {
             Users.Clear();
-            var cars = await _usersFacade.GetAsync();
-            Users.AddRange(cars);
+            var users = await _usersFacade.GetAsync();
+            Users.AddRange(users);
         }
 
     }
