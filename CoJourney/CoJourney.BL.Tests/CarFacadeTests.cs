@@ -87,8 +87,6 @@ namespace CoJourney.BL.Tests
 
 
             //Act
-            await _facadeCarSUT.SaveAsync(car1);
-            await _facadeCarSUT.SaveAsync(car2);
 
             //Assert
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
