@@ -35,7 +35,6 @@ namespace CoJourney.BL.Models
                 CreateMap<CarEntity, CarDetailModel>()
                     .ReverseMap()
                     .ForMember(entity => entity.Owner, expression => expression.Ignore())
-                    .ForMember(entity => entity.OwnerId, expression => expression.Ignore())
                     .ForMember(entity => entity.Journeys, expression => expression.Ignore());
             }
         }
