@@ -4,20 +4,35 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoJourney.App.Extensions;
+using CoJourney.App.Messages;
+using CoJourney.App.Services;
+using CoJourney.BL.Facades;
 using CoJourney.BL.Models;
 
 namespace CoJourney.App.ViewModels
 {
-    public class JourneyListViewModel
+    public class JourneyListViewModel : ViewModelBase, IJourneyListViewModel
     {
-        public ObservableCollection<JourneyListModel> Journeys { get; }
+        public ObservableCollection<JourneyListModel> Journeys { get; set; } = new();
+        private readonly IMediator _mediator;
+        private readonly JourneyFacade _journeyFacade;
 
-        public JourneyListViewModel()
+        public JourneyListViewModel(JourneyFacade journeyFacade, IMediator mediator)
         {
-            Journeys = new ObservableCollection<JourneyListModel>();
-            Journeys.Add(new JourneyListModel("Brno","Vídeň", new DateTime(2022,5,5)));
-            Journeys.Add(new JourneyListModel("Praha", "Brno", new DateTime(2022, 10, 2)));
-            Journeys.Add(new JourneyListModel("Kroměříž", "Berlín", new DateTime(2022, 12, 24)));
+            _journeyFacade = journeyFacade;
+            _mediator = mediator;
+
+            _mediator.Register<UpdateMessage<JourneyListModel>>(JourneyUpdated);
+        }
+
+        private async void JourneyUpdated(UpdateMessage<JourneyListModel> _) => await LoadAsync();
+
+        public async Task LoadAsync()
+        {
+            Journeys.Clear();
+            var journeys = await _journeyFacade.GetAsync();
+            Journeys.AddRange(journeys);
         }
     }
 }

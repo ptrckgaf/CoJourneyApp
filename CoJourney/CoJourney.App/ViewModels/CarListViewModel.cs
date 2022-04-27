@@ -4,20 +4,35 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoJourney.App.Extensions;
+using CoJourney.App.Messages;
+using CoJourney.App.Services;
+using CoJourney.BL.Facades;
 using CoJourney.BL.Models;
 
 namespace CoJourney.App.ViewModels
 {
-    public class CarListViewModel
+    public class CarListViewModel : ViewModelBase, ICarListViewModel
     {
-        public ObservableCollection<CarListModel> Cars { get; }
+        public ObservableCollection<CarListModel> Cars { get; set; } = new();
+        private readonly IMediator _mediator;
+        private readonly CarFacade _carFacade;
 
-        public CarListViewModel()
+        public CarListViewModel(CarFacade carFacade, IMediator mediator)
         {
-            Cars = new ObservableCollection<CarListModel>();
-            Cars.Add(new CarListModel("Volkswagen","New Beatle", 5){ImageURl = "https://www.autorevue.cz/GetFile.aspx?id_file=474009238" });
-            Cars.Add(new CarListModel("Škoda", "Octavia", 5));
-            Cars.Add(new CarListModel("Volkswagen", "Touran", 7){ImageURl = "https://cdn-cz.volkswagen.at/media/Content_Model_Variants_Variant_Image_Component/6718-83047-83051-2315-image/dh-960-7836a0/72ec930f/1649230618/maraton.jpg" });
+            _carFacade = carFacade;
+            _mediator = mediator;
+
+            _mediator.Register<UpdateMessage<CarListModel>>(CarUpdated);
+        }
+
+        private async void CarUpdated(UpdateMessage<CarListModel> _) => await LoadAsync();
+
+        public async Task LoadAsync()
+        {
+            Cars.Clear();
+            var cars = await _carFacade.GetAsync();
+            Cars.AddRange(cars);
         }
     }
 }

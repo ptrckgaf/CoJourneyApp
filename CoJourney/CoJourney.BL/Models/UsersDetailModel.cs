@@ -20,8 +20,6 @@ namespace CoJourney.BL.Models
             {
                 CreateMap<UserEntity, UsersDetailModel>()
                     .ReverseMap()
-                    .ForMember(entity => entity.DrivingJourneys, expression => expression.Ignore())
-                    .ForMember(entity => entity.CoRidingJourneys, expression => expression.Ignore())
                     .ForMember(entity => entity.SentInvitations, expression => expression.Ignore())
                     .ForMember(entity => entity.ReceivedInvitations, expression => expression.Ignore());
             }

@@ -64,7 +64,7 @@ public class  CRUDFacadeTestsBase : IAsyncLifetime
     }
     public static void FixCarIds(UsersDetailModel expectedModel, UsersDetailModel returnedModel)
     {
-        returnedModel.Id = expectedModel.Id;
+        expectedModel.Id = returnedModel.Id;
 
         foreach (var carDetailModel in returnedModel.OwnedCars)
         {

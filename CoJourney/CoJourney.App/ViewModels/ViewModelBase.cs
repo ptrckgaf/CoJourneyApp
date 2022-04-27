@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace CoJourney.App.ViewModels
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged, IViewModel
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

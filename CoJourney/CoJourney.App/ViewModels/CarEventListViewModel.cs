@@ -4,19 +4,36 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoJourney.App.Extensions;
+using CoJourney.App.Messages;
+using CoJourney.App.Services;
+using CoJourney.BL.Facades;
 using CoJourney.BL.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CoJourney.App.ViewModels
 {
-    public class CarEventListViewModel
+    public class CarEventListViewModel : ViewModelBase, ICarEventListViewModel
     {
-        public ObservableCollection<CarEventListModel> CarEvents { get; }
+        public ObservableCollection<CarEventListModel> CarEvents { get; set; } = new();
+        private readonly IMediator _mediator;
+        private readonly CarEventFacade _carEventFacade;
 
-        public CarEventListViewModel()
+        public CarEventListViewModel(CarEventFacade carEventFacade, IMediator mediator)
         {
-            CarEvents = new ObservableCollection<CarEventListModel>();
-            CarEvents.Add(new CarEventListModel("Pouť do Santiaga","Santiago", new DateTime(2022,8,10), new DateTime(2022,10,8)));
-            CarEvents.Add(new CarEventListModel("Odvoz na Zábavu", "Polná", new DateTime(2022, 7, 22), new DateTime(2022, 7, 23)));
+            _carEventFacade = carEventFacade;
+            _mediator = mediator;
+
+            _mediator.Register<UpdateMessage<CarEventListModel>>(CarEventUpdated);
+        }
+
+        private async void CarEventUpdated(UpdateMessage<CarEventListModel> _) => await LoadAsync();
+
+        public async Task LoadAsync()
+        {
+            CarEvents.Clear();
+            var carEvents = await _carEventFacade.GetAsync();
+            CarEvents.AddRange(carEvents);
         }
     }
 }

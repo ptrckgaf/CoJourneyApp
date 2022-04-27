@@ -28,7 +28,7 @@ namespace CoJourney.DAL
             modelBuilder.Entity<CarEntity>()
                 .HasMany(i => i.Journeys)
                 .WithOne(i => i.Car)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<CarEventEntity>()
                 .HasMany(i => i.Journeys)
@@ -43,7 +43,7 @@ namespace CoJourney.DAL
             modelBuilder.Entity<UserEntity>()
                 .HasMany(i => i.DrivingJourneys)
                 .WithOne(i => i.Driver)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserEntity>()
                 .HasMany(i => i.CoRidingJourneys)
@@ -52,12 +52,12 @@ namespace CoJourney.DAL
             modelBuilder.Entity<InvitationEntity>()
                 .HasOne(s => s.SenderUser)
                 .WithMany(g => g.SentInvitations)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<InvitationEntity>()
                 .HasOne(s => s.ReceiverUser)
                 .WithMany(g => g.ReceivedInvitations)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<InvitationEntity>()
                 .HasOne(s => s.Journey)

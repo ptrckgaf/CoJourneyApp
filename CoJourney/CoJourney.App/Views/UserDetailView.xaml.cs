@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CoJourney.App.Views
 {
     /// <summary>
-    /// Interaction logic for CarListView.xaml
+    /// Interaction logic for UserDetailView.xaml
     /// </summary>
-    public partial class CarListView : UserControlBase
+    public partial class UserDetailView : UserControlBase
     {
-        public CarListView()
+        public UserDetailView()
         {
             InitializeComponent();
         }

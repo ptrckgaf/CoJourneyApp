@@ -4,22 +4,37 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoJourney.App.Extensions;
+using CoJourney.App.Messages;
+using CoJourney.App.Services;
+using CoJourney.BL.Facades;
 using CoJourney.BL.Models;
+using CoJourney.DAL.Entities;
+
 namespace CoJourney.App.ViewModels
 {
-    public class UserListViewModel : ViewModelBase
-
+    public class UserListViewModel : ViewModelBase, IUserListViewModel
     {
-    public ObservableCollection<UsersListModel> Users { get; }
+        public ObservableCollection<UsersListModel> Users { get; set; } = new();
+        private readonly IMediator _mediator;
+        private readonly UsersFacade _usersFacade;
 
-    public UserListViewModel()
-    {
-        Users = new ObservableCollection<UsersListModel>();
-        Users.Add(new UsersListModel("Steve", "Jobs", "https://www.designmag.cz/foto/2011/10/apple-steve-jobs-0.jpg"));
-        Users.Add(new UsersListModel("Bill", "Gates",
-            "https://static01.nyt.com/images/2021/05/17/business/14altGates-print/merlin_183135423_1167fa8a-7940-427e-b690-68876010d286-superJumbo.jpg"));
-        Users.Add(new UsersListModel("Elon", "Musk",""));
-    }
+        public UserListViewModel(UsersFacade userFacade, IMediator mediator)
+        {
+            _usersFacade = userFacade;
+            _mediator = mediator;
+
+            _mediator.Register<UpdateMessage<UsersListModel>>(UserUpdated);
+        }
+
+        private async void UserUpdated(UpdateMessage<UsersListModel> _) => await LoadAsync();
+
+        public async Task LoadAsync()
+        {
+            Users.Clear();
+            var users = await _usersFacade.GetAsync();
+            Users.AddRange(users);
+        }
 
     }
 }
