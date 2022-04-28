@@ -17,38 +17,45 @@ namespace CoJourney.App.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public MainViewModel(IUserListViewModel userListViewModel, ICarListViewModel carListViewModel, 
-            IJourneyListViewModel journeyListViewModel, ICarEventListViewModel carEventListViewModel)
+            IJourneyListViewModel journeyListViewModel, ICarEventListViewModel carEventListViewModel,
+            IInvitationListViewModel invitationEventListViewModel)
         {
             UserListViewModel = userListViewModel;
             CarListViewModel = carListViewModel;
             JourneyListViewModel = journeyListViewModel;
-            CarEventListViewModel = carEventListViewModel; 
+            CarEventListViewModel = carEventListViewModel;
+            InvitationEventListViewModel = invitationEventListViewModel;
 
             JourneyListViewControl.DataContext = JourneyListViewModel;
             UserListViewControl.DataContext = UserListViewModel;
             CarListViewControl.DataContext = CarListViewModel;
             CarEventListViewControl.DataContext = CarEventListViewModel;
+            InvitationListViewModelControl.DataContext = InvitationEventListViewModel;
 
             SetListToUser = new RelayCommand(SetUserListView);
             SetListToCar = new RelayCommand(SetCarListView);
-            SetListToJoureny = new RelayCommand(SetJourneyListView);
+            SetListToJourney = new RelayCommand(SetJourneyListView);
             SetListToCarEvent = new RelayCommand(SetCarEventListView);
+            SetListToInvitation = new RelayCommand(SetInvitationListView);
 
-            
+
         }
 
         public UserListView UserListViewControl = new ();
         public CarListView CarListViewControl = new ();
         public JourneyListView JourneyListViewControl = new();
         public CarEventListView CarEventListViewControl = new();
+        public InvitationListView InvitationListViewModelControl = new();
         public IUserListViewModel UserListViewModel { get; }
         public ICarListViewModel CarListViewModel { get; }
         public IJourneyListViewModel JourneyListViewModel { get; }
         public ICarEventListViewModel CarEventListViewModel { get; }
+        public IInvitationListViewModel InvitationEventListViewModel { get; }
         public ICommand SetListToUser { get; }
         public ICommand SetListToCar { get; }
-        public ICommand SetListToJoureny { get; }
+        public ICommand SetListToJourney { get; }
         public ICommand SetListToCarEvent { get; }
+        public ICommand SetListToInvitation { get; }
         private UserControl? _listControl;
         public UserControl? ListControl
         {
@@ -73,6 +80,10 @@ namespace CoJourney.App.ViewModels
         private void SetCarEventListView()
         {
             ListControl = CarEventListViewControl;
+        }
+        private void SetInvitationListView()
+        {
+            ListControl = InvitationListViewModelControl;
         }
     }
 }

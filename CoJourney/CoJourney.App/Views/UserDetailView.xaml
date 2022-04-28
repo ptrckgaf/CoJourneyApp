@@ -13,7 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Detail uživatele" FontFamily="Arial black" FontSize="35" 
                    Foreground="BlueViolet"
@@ -78,9 +78,9 @@
                 <ColumnDefinition Width="160"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Content="Smazat"></Button>
-            <Button Grid.Column="3" Content="Uložit"></Button>
-            <Button Grid.Column="5" Content="Vytvořit nového uživatele"></Button>
+            <Button Grid.Column="1" Content="Smazat" Style="{StaticResource DetailButtons}"></Button>
+            <Button Grid.Column="3" Content="Uložit" Style="{StaticResource DetailButtons}"></Button>
+            <Button Grid.Column="5" Content="Vytvořit nového uživatele" Style="{StaticResource DetailButtons}"></Button>
         </Grid>
     </Grid>
 </local:UserControlBase>

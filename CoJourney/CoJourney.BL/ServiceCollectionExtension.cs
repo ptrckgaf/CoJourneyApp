@@ -21,6 +21,7 @@ namespace CoJourney.BL
             services.AddSingleton<CarEventFacade>();
             services.AddSingleton<CarFacade>();
             services.AddSingleton<JourneyFacade>();
+            services.AddSingleton<InvitationFacade>();
             services.AddSingleton<UsersFacade>();
 
             services.AddAutoMapper((serviceProvider, cfg) =>

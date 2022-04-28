@@ -4,4 +4,11 @@
         <Setter Property="Foreground" Value="White"></Setter>
         <Setter Property="FontSize" Value="15"></Setter>
     </Style>
+    <Style TargetType="Button" x:Key="DetailButtons">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="20" />
+            </Style>
+        </Style.Resources>
+    </Style>
 </ResourceDictionary>

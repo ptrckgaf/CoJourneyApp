@@ -7,8 +7,8 @@ namespace CoJourney.BL.Models
 {
     public record InvitationDetailModel(
         Guid SenderUserId,
-        string SenderName,
-        string SenderSurname,
+        string SenderUserName,
+        string SenderUserSurname,
         Guid JourneyId,
         string JourneyStartLocation,
         string JourneyTargetLocation,
@@ -18,9 +18,9 @@ namespace CoJourney.BL.Models
 
         public Guid SenderUserId { get; set; } = SenderUserId;
 
-        public string SenderName { get; set; } = SenderName;
+        public string SenderUserName { get; set; } = SenderUserName;
 
-        public string SenderSurname { get; set; } = SenderSurname;
+        public string SenderUserSurname { get; set; } = SenderUserSurname;
 
         public Guid JourneyId { get; set; } = JourneyId;
 
@@ -37,13 +37,11 @@ namespace CoJourney.BL.Models
             public MapperProfile()
             {
                 CreateMap<InvitationEntity, InvitationDetailModel>()
-                .ForMember(entity => entity.SenderUserId, expression => expression.Ignore())
-                .ForMember(entity => entity.JourneyId, expression => expression.Ignore())
-                .ForMember(entity => entity.SenderName, expression => expression.Ignore())
-                .ForMember(entity => entity.SenderSurname, expression => expression.Ignore())
-                .ForMember(entity => entity.JourneyStartLocation, expression => expression.Ignore())
-                .ForMember(entity => entity.JourneyTargetLocation, expression => expression.Ignore())
-                .ForMember(entity => entity.JourneyBeginTime, expression => expression.Ignore());
+                    .ReverseMap()
+                    .ForMember(entity => entity.SenderUser, expression => expression.Ignore())
+                    .ForMember(entity => entity.ReceiverUser, expression => expression.Ignore())
+                    .ForMember(entity => entity.Journey, expression => expression.Ignore())
+                ;
             }
         }
     }

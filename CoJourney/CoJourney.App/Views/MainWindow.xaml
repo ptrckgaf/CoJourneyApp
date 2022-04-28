@@ -84,7 +84,7 @@
                        Text="Jízdy" 
                        Style="{StaticResource TextBlockOnSide}" >
                 <TextBlock.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding SetListToJoureny}"></MouseBinding>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding SetListToJourney}"></MouseBinding>
                 </TextBlock.InputBindings>
             </TextBlock>
             <TextBlock Grid.Row="1" FontFamily="Arial Black" 
@@ -104,7 +104,11 @@
             </TextBlock>
             <TextBlock Grid.Row="3" FontFamily="Arial Black" 
                        Text="Pozvánky" 
-                       Style="{StaticResource TextBlockOnSide}" />
+                       Style="{StaticResource TextBlockOnSide}" >
+                <TextBlock.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding SetListToInvitation}"></MouseBinding>
+                </TextBlock.InputBindings> 
+            </TextBlock>
             <TextBlock Grid.Row="4" FontFamily="Arial Black" 
                        Text="Auta" 
                        Style="{StaticResource TextBlockOnSide}">
@@ -114,6 +118,6 @@
             </TextBlock>
         </Grid>
 
-        <ContentControl Name="listViewControl" Content="{Binding ListControl}" Grid.Row="1" Grid.Column="1" ></ContentControl> 
+        <ContentControl Content="{Binding ListControl}" Grid.Row="1" Grid.Column="1" ></ContentControl> 
     </Grid>
 </Window>

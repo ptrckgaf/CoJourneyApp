@@ -58,6 +58,7 @@ namespace CoJourney.App
             services.AddSingleton<ICarListViewModel, CarListViewModel>();
             services.AddSingleton<IJourneyListViewModel, JourneyListViewModel>();
             services.AddSingleton<ICarEventListViewModel, CarEventListViewModel>();
+            services.AddSingleton<IInvitationListViewModel, InvitationListViewModel>();
             //services.AddFactory<IIngredientDetailViewModel, IngredientDetailViewModel>();
             //services.AddSingleton<IRecipeListViewModel, RecipeListViewModel>();
             //services.AddFactory<IRecipeDetailViewModel, RecipeDetailViewModel>();

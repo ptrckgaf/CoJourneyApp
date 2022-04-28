@@ -8,6 +8,12 @@ namespace CoJourney.BL.Models
     public record InvitationListModel(
         Guid SenderUserId,
         Guid JourneyId,
+        string SenderUserName,
+        string SenderUserSurname,
+        string ReceiverUserName,
+        string ReceiverUserSurname,
+        string JourneyTargetLocation,
+        string JourneyStartLocation,
         bool? Accepted) : ModelBase
     {
 
@@ -16,14 +22,18 @@ namespace CoJourney.BL.Models
         public Guid JourneyId { get; set; } = JourneyId;
 
         public bool? Accepted { get; set; } = Accepted;
-
+        public string SenderUserName { get; set; } = SenderUserName;
+        public string SenderUserSurname { get; set; }= SenderUserSurname;
+        public string ReceiverUserName { get; set; } = ReceiverUserName;
+        public string ReceiverUserSurname { get; set; } = ReceiverUserSurname;
+        public string JourneyTargetLocation { get; set; } = JourneyTargetLocation;
+        public string JourneyStartLocation { get; set; } = JourneyStartLocation;
         public class MapperProfile : Profile
         {
             public MapperProfile()
             {
                 CreateMap<InvitationEntity, InvitationListModel>()
-                .ForMember(entity => entity.JourneyId, expression => expression.Ignore())
-                .ForMember(entity => entity.SenderUserId, expression => expression.Ignore());
+                    .ReverseMap();
             }
         }
     }
