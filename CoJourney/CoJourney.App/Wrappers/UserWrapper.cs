@@ -45,11 +45,12 @@ namespace CoJourney.App.Wrappers
             {
                 yield return new ValidationResult($"{nameof(Surname)} is required", new[] { nameof(Surname) });
             }
-
-            if (string.IsNullOrWhiteSpace(State))
-            {
-                yield return new ValidationResult($"{nameof(State)} is required", new[] { nameof(State) });
-            }
+            
         }
+        public static implicit operator UserWrapper(UsersDetailModel detailModel)
+            => new(detailModel);
+
+        public static implicit operator UsersDetailModel(UserWrapper wrapper)
+            => wrapper.Model;
     }
 }

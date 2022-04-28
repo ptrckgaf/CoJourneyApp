@@ -22,5 +22,6 @@ namespace CoJourney.DAL.Entities
         public ICollection<JourneyEntity> CoRidingJourneys { get; init; } = new List<JourneyEntity>();
         public ICollection<InvitationEntity> SentInvitations { get; init; } = new List<InvitationEntity>();
         public ICollection<InvitationEntity> ReceivedInvitations { get; init; } = new List<InvitationEntity>();
+        public ICollection<CarEventEntity> CarEvents { get; init; } = new List<CarEventEntity>();
     }
 }

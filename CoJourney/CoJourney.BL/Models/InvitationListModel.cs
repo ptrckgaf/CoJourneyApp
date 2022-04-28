@@ -8,6 +8,7 @@ namespace CoJourney.BL.Models
     public record InvitationListModel(
         Guid SenderUserId,
         Guid JourneyId,
+        Guid ReceiverUserId,
         string SenderUserName,
         string SenderUserSurname,
         string ReceiverUserName,
@@ -18,6 +19,7 @@ namespace CoJourney.BL.Models
     {
 
         public Guid SenderUserId { get; set; } = SenderUserId;
+        public Guid ReceiverUserId { get; set; } = ReceiverUserId;
 
         public Guid JourneyId { get; set; } = JourneyId;
 

@@ -46,6 +46,11 @@ namespace CoJourney.DAL
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<UserEntity>()
+                .HasMany(i => i.CarEvents)
+                .WithOne(i => i.Institutor)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserEntity>()
                 .HasMany(i => i.CoRidingJourneys)
                 .WithMany(i => i.CoRiders);
 

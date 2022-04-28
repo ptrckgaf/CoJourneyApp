@@ -24,9 +24,11 @@ namespace CoJourney.App.ViewModels
             _mediator = mediator;
 
             _mediator.Register<UpdateMessage<JourneyListModel>>(JourneyUpdated);
+            _mediator.Register<DeleteMessage<JourneyListModel>>(JourneyDeleted);
         }
 
         private async void JourneyUpdated(UpdateMessage<JourneyListModel> _) => await LoadAsync();
+        private async void JourneyDeleted(DeleteMessage<JourneyListModel> _) => await LoadAsync();
 
         public async Task LoadAsync()
         {

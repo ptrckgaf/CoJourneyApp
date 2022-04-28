@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Windows;
+using CoJourney.App.Extensions;
 using CoJourney.App.Services;
 using CoJourney.App.Settings;
 using CoJourney.App.ViewModels;
@@ -59,10 +60,7 @@ namespace CoJourney.App
             services.AddSingleton<IJourneyListViewModel, JourneyListViewModel>();
             services.AddSingleton<ICarEventListViewModel, CarEventListViewModel>();
             services.AddSingleton<IInvitationListViewModel, InvitationListViewModel>();
-            //services.AddFactory<IIngredientDetailViewModel, IngredientDetailViewModel>();
-            //services.AddSingleton<IRecipeListViewModel, RecipeListViewModel>();
-            //services.AddFactory<IRecipeDetailViewModel, RecipeDetailViewModel>();
-            //services.AddFactory<IIngredientAmountDetailViewModel, IngredientAmountDetailViewModel>();
+            services.AddFactory<IUserDetailViewModel, UserDetailViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

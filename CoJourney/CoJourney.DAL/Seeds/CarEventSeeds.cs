@@ -11,7 +11,8 @@ public static class CarEventSeeds
         BeginTime: new DateTime(2022,4,26,16,30,0),
         EndTime: new DateTime(2022,4,26,17,45,0),
         Name: "Pouť na Velehrad",
-        TargetLocation: "Velehrad"
+        TargetLocation: "Velehrad",
+        InstitutorId: UserSeeds.User1.Id
     );
 
     public static void Seed(this ModelBuilder modelBuilder)

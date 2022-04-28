@@ -24,5 +24,7 @@ namespace CoJourney.BL.Models
                     .ForMember(entity => entity.ReceivedInvitations, expression => expression.Ignore());
             }
         }
+
+        public static UsersDetailModel Empty => new("Noname","Nosurname", "I DONT EXISTS");
     }
 }

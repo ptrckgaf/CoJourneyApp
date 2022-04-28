@@ -118,6 +118,7 @@
             </TextBlock>
         </Grid>
 
-        <ContentControl Content="{Binding ListControl}" Grid.Row="1" Grid.Column="1" ></ContentControl> 
-    </Grid>
+        <ContentControl Content="{Binding ListControl}" Grid.Row="1" Grid.Column="1" ></ContentControl>
+        <ContentControl Content="{Binding ModelControl}" Grid.Row="1" Grid.Column="2" ></ContentControl>
+</Grid>
 </Window>
