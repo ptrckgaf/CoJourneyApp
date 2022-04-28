@@ -21,11 +21,13 @@ namespace CoJourney.BL.Models
 
         public string TargetLocation { get; set; } = TargetLocation;
         public string Name { get; set; } = Name;
+        public Guid InstitutorId { get; set; }
         public class MapperProfile : Profile
         {
             public MapperProfile()
             {
-                CreateMap<CarEventEntity, CarEventDetailModel>();
+                CreateMap<CarEventEntity, CarEventDetailModel>().ReverseMap()
+                    .ForMember(entity => entity.Institutor, expression => expression.Ignore());
             }
         }
     }
