@@ -2,6 +2,7 @@
 using Xunit;
 using Xunit.Abstractions;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CoJourney.BL.Models;
 using CoJourney.Common.Tests;
@@ -13,13 +14,11 @@ namespace CoJourney.BL.Tests
     public class CarEventFacadeTests : CRUDFacadeTestsBase
     {
         private readonly UsersFacade _facadeSUT;
-        private readonly CarFacade _facadeCarSUT;
         private readonly CarEventFacade _facadeEventSUT;
 
         public CarEventFacadeTests(ITestOutputHelper output) : base(output)
         {
             _facadeSUT = new UsersFacade(UnitOfWorkFactory, Mapper);
-            _facadeCarSUT = new CarFacade(UnitOfWorkFactory, Mapper);
             _facadeEventSUT = new CarEventFacade(UnitOfWorkFactory, Mapper);
         }
 
@@ -83,10 +82,44 @@ namespace CoJourney.BL.Tests
             var returnevent = await _facadeEventSUT.SaveAsync(event2);
             FixEventIds(event2,returnevent);
             //Assert
-            
-            DeepAssert.Equal(event2.TargetLocation, "- UPDATED");
+
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            var userFromDb = await dbxAssert.Events.SingleAsync(i => i.Id == returnevent.Id);
+            DeepAssert.Equal(returnevent, Mapper.Map<CarEventDetailModel>(userFromDb));
         }
 
+        [Fact]
+
+        public async Task Nonexisting_event()
+        {
+            var returnevent = await _facadeEventSUT.GetAsync(CarEventSeeds.EmptyUser.Id);
+
+            Assert.Null(returnevent);
+        }
+
+        [Fact]
+
+        public async Task new_user_instituting_an_Event()
+        {
+            var user = new UsersDetailModel
+            (
+                Name: "Jozo",
+                Surname: "Procko",
+                State: "stale komikom"
+            );
+            var retrunuser = await _facadeSUT.SaveAsync(user);
+            var event1 = new CarEventDetailModel
+                (
+                BeginTime: new DateTime(2022, 12,22,4,55,00),
+                EndTime: new DateTime( 2022,12,25,4,55,30),
+                Name:"Utek",
+                TargetLocation: "Izba"
+                ) {   InstitutorId = retrunuser.Id };
+
+            var returnevent = await _facadeEventSUT.SaveAsync(event1);
+            
+            DeepAssert.Equal(retrunuser.Id,returnevent.InstitutorId);
+        }
 
     } 
 }
