@@ -62,6 +62,7 @@ namespace CoJourney.App
             services.AddSingleton<IInvitationListViewModel, InvitationListViewModel>();
             services.AddFactory<IUserDetailViewModel, UserDetailViewModel>();
             services.AddFactory<ICarDetailViewModel, CarDetailViewModel>();
+            services.AddFactory<IJourneyDetailViewModel, JourneyDetailViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

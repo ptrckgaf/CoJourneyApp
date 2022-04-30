@@ -4,9 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Navigation;
+using CoJourney.App.Commands;
 using CoJourney.App.Extensions;
 using CoJourney.App.Messages;
 using CoJourney.App.Services;
+using CoJourney.App.Wrappers;
 using CoJourney.BL.Facades;
 using CoJourney.BL.Models;
 
@@ -23,18 +27,32 @@ namespace CoJourney.App.ViewModels
             _journeyFacade = journeyFacade;
             _mediator = mediator;
 
-            _mediator.Register<UpdateMessage<JourneyListModel>>(JourneyUpdated);
-            _mediator.Register<DeleteMessage<JourneyListModel>>(JourneyDeleted);
+            _mediator.Register<UpdateMessage<JourneyWrapper>>(JourneyUpdated);
+            _mediator.Register<DeleteMessage<JourneyWrapper>>(JourneyDeleted);
+            
+            SelectedJourneyCommand = new RelayCommand<JourneyListModel>(SelectedJourney);
+            NewJourneyCommand = new RelayCommand(Nothing);
         }
 
-        private async void JourneyUpdated(UpdateMessage<JourneyListModel> _) => await LoadAsync();
-        private async void JourneyDeleted(DeleteMessage<JourneyListModel> _) => await LoadAsync();
-
+        public void Nothing()
+        {
+            return;
+        }
+        private async void JourneyUpdated(UpdateMessage<JourneyWrapper> _) => await LoadAsync();
+        private async void JourneyDeleted(DeleteMessage<JourneyWrapper> _) => await LoadAsync();
+        public ICommand SelectedJourneyCommand { get; }
+        public int? SelectedJourneyIndex { get; set; }
+        public ICommand NewJourneyCommand { get; set; }
         public async Task LoadAsync()
         {
             Journeys.Clear();
             var journeys = await _journeyFacade.GetAsync();
             Journeys.AddRange(journeys);
+        }
+
+        public void SelectedJourney(JourneyListModel? journeyListModel)
+        {
+            _mediator.Send(new SelectedMessage<JourneyWrapper> {Id = journeyListModel?.Id});
         }
     }
 }

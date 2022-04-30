@@ -23,7 +23,6 @@ namespace CoJourney.App.ViewModels
     {
         private readonly IMediator _mediator;
         private readonly CarFacade _carFacade;
-        private readonly UsersFacade _userFacade;
         private IFactory<ICarDetailViewModel> _carDetailViewModelFactory;
 
         public CarDetailViewModel(
@@ -33,7 +32,6 @@ namespace CoJourney.App.ViewModels
         {
             _carFacade = carFacade;
             _mediator = mediator;
-            _userFacade = userFacade;
 
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
             DeleteCommand = new AsyncRelayCommand(DeleteAsync);
