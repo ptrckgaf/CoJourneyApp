@@ -62,6 +62,11 @@ public class  CRUDFacadeTestsBase : IAsyncLifetime
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         await dbx.Database.EnsureDeletedAsync();
     }
+
+    public static void FixEventIds(CarEventDetailModel expectedModel, CarEventDetailModel returnedModel)
+    {
+        expectedModel.Id = returnedModel.Id;
+    }
     public static void FixCarIds(UsersDetailModel expectedModel, UsersDetailModel returnedModel)
     {
         expectedModel.Id = returnedModel.Id;
