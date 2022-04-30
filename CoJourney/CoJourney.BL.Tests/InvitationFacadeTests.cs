@@ -156,9 +156,7 @@ namespace CoJourney.BL.Tests
             Assert.Null(invitationNull);
         }
 
-        [Fact]
 
-        public async Task Can_save_journey()
 
     } 
 }
