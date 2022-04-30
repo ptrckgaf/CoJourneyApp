@@ -29,7 +29,7 @@ namespace CoJourney.App.ViewModels
 
             _mediator.Register<UpdateMessage<JourneyWrapper>>(JourneyUpdated);
             _mediator.Register<DeleteMessage<JourneyWrapper>>(JourneyDeleted);
-            
+
             SelectedJourneyCommand = new RelayCommand<JourneyListModel>(SelectedJourney);
             NewJourneyCommand = new RelayCommand(Nothing);
         }
@@ -45,9 +45,11 @@ namespace CoJourney.App.ViewModels
         public ICommand NewJourneyCommand { get; set; }
         public async Task LoadAsync()
         {
+            int ?tempSelectedJourneyIndex = SelectedJourneyIndex;
             Journeys.Clear();
             var journeys = await _journeyFacade.GetAsync();
             Journeys.AddRange(journeys);
+            SelectedJourneyIndex = tempSelectedJourneyIndex;
         }
 
         public void SelectedJourney(JourneyListModel? journeyListModel)

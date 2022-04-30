@@ -41,6 +41,8 @@ namespace CoJourney.App.ViewModels
 
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
             DeleteCommand = new AsyncRelayCommand(DeleteAsync);
+            SelectedCarChangedCommand = new RelayCommand(SelectedCarChanged);
+
             _journeyDetailViewModelFactory = journeyDetailViewModelFactory;
             _mediator.Register<LoadMessage<JourneyWrapper>>(async message => await JourneyLoad(message));
         }
@@ -48,6 +50,7 @@ namespace CoJourney.App.ViewModels
         public JourneyWrapper? Model { get; set; } = null;
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand SelectedCarChangedCommand { get; }
         public CarListModel selectedCar { get; set; }
         public bool IsMyJourney => (((Model == null)? Guid.Empty:Model.DriverId) == LoggedUser);
         public bool IsNotMyJourney => !IsMyJourney;
@@ -104,7 +107,7 @@ namespace CoJourney.App.ViewModels
 
             if (Model.Id != Guid.Empty)
             {
-                if (MessageBoxResult.Yes != MessageBox.Show("Opravdu chcete dané auto smazat?",
+                if (MessageBoxResult.Yes != MessageBox.Show("Opravdu chcete danou jízdu smazat?",
                         "Pozor!", MessageBoxButton.YesNo, MessageBoxImage.Asterisk))
                     return;
 
@@ -114,7 +117,7 @@ namespace CoJourney.App.ViewModels
                 }
                 catch
                 {
-                    MessageBox.Show("Auto nemohlo být smazáno.", "Chyba!", MessageBoxButton.OK,
+                    MessageBox.Show("Jízda nemohla být smazána.", "Chyba!", MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
 
@@ -124,6 +127,12 @@ namespace CoJourney.App.ViewModels
                 });
             }
 
+        }
+
+        private void SelectedCarChanged()
+        {
+            if(Model != null)
+                Model.CarId = selectedCar.Id;
         }
     }
 }
