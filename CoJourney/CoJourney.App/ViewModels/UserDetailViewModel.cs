@@ -11,7 +11,7 @@ using CoJourney.App.Services;
 using CoJourney.App.Wrappers;
 using CoJourney.BL.Facades;
 using CoJourney.BL.Models;
-using Microsoft.Toolkit.Mvvm.Input;
+using CoJourney.App.Commands;
 
 namespace CoJourney.App.ViewModels
 {
@@ -39,6 +39,7 @@ namespace CoJourney.App.ViewModels
         public async Task LoadAsync(Guid id)
         {
             Model = await _userFacade.GetAsync(id) ?? UsersDetailModel.Empty;
+            OnPropertyChanged();
         }
 
         public async Task SaveAsync()
@@ -55,9 +56,8 @@ namespace CoJourney.App.ViewModels
 
         public async Task DeleteAsync()
         {
-            if (Model is null)
-                throw new NoNullAllowedException("Null model nemůže být uložen ani upraven.");
-            
+            if (Model is null || Model.Id == Guid.Empty)
+                throw new NoNullAllowedException("Null model nemůže být odstreněn.");
 
             if (Model.Id != Guid.Empty)
             {
@@ -73,7 +73,6 @@ namespace CoJourney.App.ViewModels
                 {
                     MessageBox.Show("Uživatel nemohl být smazán.", "Chyba!", MessageBoxButton.OK,
                         MessageBoxImage.Error);
-                    return;
                 }
 
                 _mediator.Send(new DeleteMessage<UserWrapper>

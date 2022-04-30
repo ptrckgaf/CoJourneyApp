@@ -15,19 +15,22 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock  Text="Uživatelé" FontSize="20" FontFamily="Arial black" Foreground="BlueViolet" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
 
-        <ListBox x:Name="RecipesListBox"
+        <ListBox x:Name="UserListBox"
                  Grid.Row="1"
-                 ItemsSource="{Binding Users}">
+                 ItemsSource="{Binding Users}"
+                 SelectedIndex="{Binding SelectedUserIndex, Mode=TwoWay}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding IngredientSelectedCommand}"
-                                           CommandParameter="{Binding ElementName=IngredientsListBox, Path=SelectedItem}" />
+                    <i:InvokeCommandAction Command="{Binding SelectedUserCommand}"
+                                           CommandParameter="{Binding ElementName=UserListBox, Path=SelectedItem}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <ListBox.ItemTemplate>
@@ -50,5 +53,14 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Content="Nový" Style="{StaticResource DetailButtons}" Command="{Binding NewUserCommand}"/>
+        </Grid>
+        
     </Grid>
 </local:UserControlBase >

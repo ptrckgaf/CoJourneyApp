@@ -43,9 +43,9 @@ namespace CoJourney.BL.Tests
         [Fact]
         public async Task GetById_SeededFelos()
         {
-            var ingredient = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
+            var user = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
 
-            DeepAssert.Equal(Mapper.Map<UsersDetailModel>(UserSeeds.Felos), ingredient);
+            DeepAssert.Equal(Mapper.Map<UsersDetailModel>(UserSeeds.Felos), user);
         }
 
         
@@ -61,7 +61,6 @@ namespace CoJourney.BL.Tests
         public async Task SeededFelos_DeleteById_Deleted()
         {
             await _facadeSUT.DeleteAsync(UserSeeds.Felos.Id);
-
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             Assert.False(await dbxAssert.Users.AnyAsync(i => i.Id == UserSeeds.Felos.Id));
         }
@@ -117,6 +116,37 @@ namespace CoJourney.BL.Tests
             //Assert
             var userFromDb = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
             DeepAssert.Equal(user, Mapper.Map<UsersDetailModel>(userFromDb));
+        }
+        [Fact]
+        public async Task SeededFelos_Delete_Deleted()
+        {
+            //Arrange
+            var user = new UsersDetailModel
+            (
+                Name: UserSeeds.Felos.Name,
+                Surname: UserSeeds.Felos.Surname,
+                State: UserSeeds.Felos.State
+            )
+            {
+                OwnedCars = {
+                    new CarDetailModel(
+                        Producer:CarSeeds.Picaso.Producer,
+                        ModelName:CarSeeds.Picaso.ModelName,
+                        FirstRegistrationDate:CarSeeds.Picaso.FirstRegistrationDate,
+                        Capacity:CarSeeds.Picaso.Capacity)
+                },
+                Id = UserSeeds.Felos.Id
+            };
+            var returnedUser = await _facadeSUT.SaveAsync(user);
+            FixCarIds(user, returnedUser);
+
+
+            //Act
+            await _facadeSUT.DeleteAsync(returnedUser.Id);
+
+            //Assert
+            var userFromDb = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
+            DeepAssert.Equal(userFromDb, null);
         }
     } 
 }

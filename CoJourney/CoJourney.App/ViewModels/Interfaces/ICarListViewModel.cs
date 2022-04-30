@@ -8,5 +8,6 @@ namespace CoJourney.App.ViewModels
 {
     public interface ICarListViewModel : IListViewModel
     {
+        public Guid LoggedUser { get; set; }
     }
 }
