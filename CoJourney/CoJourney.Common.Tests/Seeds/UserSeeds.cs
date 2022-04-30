@@ -42,6 +42,7 @@ public static class UserSeeds
         modelBuilder.Entity<UserEntity>().HasData(
             UserUpdate,
             UserDelete,
+            Patejdl,
             Felos);
     }
 }
