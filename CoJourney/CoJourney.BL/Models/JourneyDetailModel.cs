@@ -27,7 +27,7 @@ namespace CoJourney.BL.Models
         public Guid DriverId { get; set; } = DriverId;
         public string DriverName { get; set; }
         public string DriverSurname { get; set; }
-        public ICollection<UserEntity> CoRiders { get; init; } = new List<UserEntity>();
+        public List<UsersDetailModel> CoRiders { get; init; } = new();
         public class MapperProfile : Profile
         {
             public MapperProfile()
