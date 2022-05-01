@@ -34,10 +34,10 @@ namespace CoJourney.App.ViewModels
         public async void LoadAsync()
         {
             Users.Clear();
-            
             var users = await _userFacade.GetAsync();
-
             Users.AddRange(users);
+            if(Users.Count == 0)
+                Users.Add(UsersListModel.Empty);
             OnPropertyChanged();
         }
 

@@ -16,5 +16,8 @@ namespace CoJourney.BL.Models
                 CreateMap<UserEntity, UsersListModel>();
             }
         }
+
+        public static UsersListModel Empty = new("NoName", "NoSurname",
+            "https://znakynaklavesnici.cz/wp-content/uploads/Nahled-otazniku.png");
     }
 }

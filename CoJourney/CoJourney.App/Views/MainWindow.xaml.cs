@@ -29,7 +29,7 @@ namespace CoJourney.App
             InitializeComponent();
             DataContext = mainViewModel;
             //TODO odkomentovat do finální verze 
-            /*var loginWindowViewModel = new LoginWindowViewModel(userfacade, mediator);
+            var loginWindowViewModel = new LoginWindowViewModel(userfacade, mediator);
             LoginWindow loginWindow = new LoginWindow(userfacade, loginWindowViewModel);
             loginWindow.ShowDialog();
             if (! loginWindowViewModel.AllowStart)
@@ -37,7 +37,10 @@ namespace CoJourney.App
                 this.Close();
             }
             else
-            {Show(); }*/
+            {
+                mainViewModel.LoggedUser = loginWindowViewModel.SelectedUser;
+                Show();
+            }
             
         }
     }

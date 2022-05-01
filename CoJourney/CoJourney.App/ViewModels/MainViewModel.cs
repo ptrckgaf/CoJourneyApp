@@ -64,7 +64,7 @@ namespace CoJourney.App.ViewModels
         }
 
         public static readonly UserEntity myUser = UserSeeds.User2;
-        public UsersListModel LoggedUser { get; } = new (myUser.Name, myUser.Surname, myUser.ImageUrl){Id = myUser.Id};
+        public UsersListModel LoggedUser { get; set; } = new (myUser.Name, myUser.Surname, myUser.ImageUrl){Id = myUser.Id};
 
         public ObservableCollection<IUserDetailViewModel> UserDetailViewModels { get; } =
             new ObservableCollection<IUserDetailViewModel>();

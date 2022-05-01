@@ -91,7 +91,7 @@ namespace CoJourney.App
                 }
             }
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
+            //mainWindow.Show();
             base.OnStartup(e);
         }
 
