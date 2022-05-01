@@ -9,6 +9,7 @@ using CoJourney.DAL;
 using CoJourney.DAL.UnitOfWork;
 using CoJourney.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using Nemesis.Essentials.Design;
 
 namespace CoJourney.BL.Facades;
 
@@ -84,5 +85,22 @@ public class CRUDFacade<TEntity, TListModel, TDetailModel>
             .Get()
             .Where(e => e.InstitutorId == institutorId);
         return await _mapper.ProjectTo<CarEventListModel>(query).ToArrayAsync().ConfigureAwait(false);
+    }
+
+    public async Task<IEnumerable<JourneyListModel>> GetFilterdJoureneysAsync(DateTime beginTime, DateTime endTime,
+        string targetLocation, string startLocation)
+    {
+        await using var uow = _unitOfWorkFactory.Create();
+        var query = uow
+            .GetRepository<JourneyEntity>()
+            .Get()
+            .Where(j => DateTime.Compare(j.BeginTime, beginTime) >= 0)
+            .Where(j => DateTime.Compare(j.BeginTime, endTime) <= 0);
+
+        if (!targetLocation.IsNullOrEmpty())
+            query = query.Where(j => j.TargetLocation == targetLocation);
+        if (!startLocation.IsNullOrEmpty())
+            query = query.Where(j => j.StartLocation == startLocation);
+        return await _mapper.ProjectTo<JourneyListModel>(query).ToArrayAsync().ConfigureAwait(false);
     }
 }
