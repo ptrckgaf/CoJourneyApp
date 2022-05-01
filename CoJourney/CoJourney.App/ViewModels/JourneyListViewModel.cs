@@ -32,20 +32,25 @@ namespace CoJourney.App.ViewModels
 
             SelectedJourneyCommand = new RelayCommand<JourneyListModel>(SelectedJourney);
             NewJourneyCommand = new RelayCommand(NewJourney);
+            ApplyFilterCommand = new AsyncRelayCommand(LoadAsync);
         }
 
         public void NewJourney() => _mediator.Send(new NewMessage<JourneyWrapper>(){Id = Guid.Empty});
-        
+        public DateTime BeginTimeFilter { get; set; } = DateTime.Now.AddYears(-50);
+        public DateTime EndTimeFilter { get; set; } = DateTime.Now.AddYears(50);
+        public string TargetLocation { get; set; } = "";
+        public string StartLocation { get; set; } = "";
         private async void JourneyUpdated(UpdateMessage<JourneyWrapper> _) => await LoadAsync();
         private async void JourneyDeleted(DeleteMessage<JourneyWrapper> _) => await LoadAsync();
         public ICommand SelectedJourneyCommand { get; }
         public int? SelectedJourneyIndex { get; set; }
         public ICommand NewJourneyCommand { get; set; }
+        public ICommand ApplyFilterCommand { get; set; }
         public async Task LoadAsync()
         {
             int ?tempSelectedJourneyIndex = SelectedJourneyIndex;
             Journeys.Clear();
-            var journeys = await _journeyFacade.GetAsync();
+            var journeys = await _journeyFacade.GetFilterdJoureneysAsync(BeginTimeFilter, EndTimeFilter,TargetLocation,StartLocation);
             Journeys.AddRange(journeys);
             SelectedJourneyIndex = tempSelectedJourneyIndex;
         }
