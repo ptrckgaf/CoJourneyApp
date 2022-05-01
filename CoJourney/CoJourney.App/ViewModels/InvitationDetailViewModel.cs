@@ -18,10 +18,10 @@ namespace CoJourney.App.ViewModels
     public class InvitationDetailViewModel : ViewModelBase, IInvitationDetailViewModel
     {
         private readonly IMediator _mediator;
-        private readonly InvitationsFacade _invitationFacade;
+        private readonly InvitationFacade _invitationFacade;
 
         public InvitationDetailViewModel(
-            InvitationsFacade InvitationFacade,
+            InvitationFacade InvitationFacade,
             IMediator mediator)
         {
             _invitationFacade = InvitationFacade;

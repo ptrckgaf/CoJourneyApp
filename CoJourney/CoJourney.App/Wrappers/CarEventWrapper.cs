@@ -33,5 +33,10 @@ namespace CoJourney.App.Wrappers
             get => GetValue<string>();
             set => SetValue(value);
         }
+        public static implicit operator CarEventWrapper(CarEventDetailModel detailModel)
+            => new(detailModel);
+
+        public static implicit operator CarEventDetailModel(CarEventWrapper wrapper)
+            => wrapper.Model;
     }
 }

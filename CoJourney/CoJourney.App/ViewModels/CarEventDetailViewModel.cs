@@ -18,10 +18,10 @@ namespace CoJourney.App.ViewModels
     public class CarEventDetailViewModel : ViewModelBase, ICarEventDetailViewModel
     {
         private readonly IMediator _mediator;
-        private readonly CarEventsFacade _CarEventFacade;
+        private readonly CarEventFacade _CarEventFacade;
 
         public CarEventDetailViewModel(
-            CarEventsFacade CarEventFacade,
+            CarEventFacade CarEventFacade,
             IMediator mediator)
         {
             _CarEventFacade = CarEventFacade;

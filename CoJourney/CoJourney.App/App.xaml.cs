@@ -64,7 +64,9 @@ namespace CoJourney.App
             services.AddSingleton<IInvitationListViewModel, InvitationListViewModel>();
             services.AddFactory<IUserDetailViewModel, UserDetailViewModel>();
             services.AddFactory<ICarDetailViewModel, CarDetailViewModel>();
-
+            services.AddFactory<IJourneyDetailViewModel, JourneyDetailViewModel>();
+            services.AddFactory<IInvitationDetailViewModel, InvitationDetailViewModel>();
+            services.AddFactory<ICarEventDetailViewModel, CarEventDetailViewModel>();
             services.AddSingleton<LoginWindowViewModel>();
         }
 
@@ -88,8 +90,8 @@ namespace CoJourney.App
                     await dbx.Database.MigrateAsync();
                 }
             }
-            _host.Services.GetRequiredService<MainWindow>();
-            //mainWindow.Show(); !!Ne
+            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
             base.OnStartup(e);
         }
 

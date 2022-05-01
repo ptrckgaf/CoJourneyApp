@@ -22,6 +22,11 @@ namespace CoJourney.BL.Models
         public Guid JourneyId { get; set; } = JourneyId;
 
         public bool? Accepted { get; set; } = Accepted;
+        public string SenderUserSurname { get; set; }
+        public string SenderUserName { get; set; }
+        public string JourneyTargetLocation { get; set; }
+        public string JourneyStartLocation { get; set; }
+        public DateTime JourneyBeginTime { get; set; }
 
         public class MapperProfile : Profile
         {
@@ -35,5 +40,8 @@ namespace CoJourney.BL.Models
                 ;
             }
         }
+
+        public static readonly InvitationDetailModel Empty =
+            new InvitationDetailModel(Guid.Empty, Guid.Empty, Guid.Empty, null);
     }
 }

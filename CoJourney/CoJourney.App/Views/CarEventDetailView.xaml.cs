@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace CoJourney.App.Views
 {
     
-    public partial class CarEventDetailView : CarEventControlBase
+    public partial class CarEventDetailView : UserControlBase
     {
         public CarEventDetailView()
         {

@@ -30,5 +30,7 @@ namespace CoJourney.BL.Models
                     .ForMember(entity => entity.Institutor, expression => expression.Ignore());
             }
         }
+
+        public static readonly CarEventDetailModel Empty = new CarEventDetailModel(DateTime.Now, DateTime.Now.AddDays(1),"", "");
     }
 }

@@ -12,8 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CoJourney.App.Services;
 using CoJourney.App.ViewModels;
 using CoJourney.App.Views;
+using CoJourney.BL.Facades;
 
 namespace CoJourney.App
 {
@@ -22,11 +24,12 @@ namespace CoJourney.App
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(MainViewModel mainViewModel, BL.Facades.UsersFacade userfacade, Services.IMediator mediator)
+        public MainWindow(MainViewModel mainViewModel, UsersFacade userfacade, IMediator mediator)
         {   
             InitializeComponent();
             DataContext = mainViewModel;
-            var loginWindowViewModel = new LoginWindowViewModel(userfacade, mediator);
+            //TODO odkomentovat do finální verze 
+            /*var loginWindowViewModel = new LoginWindowViewModel(userfacade, mediator);
             LoginWindow loginWindow = new LoginWindow(userfacade, loginWindowViewModel);
             loginWindow.ShowDialog();
             if (! loginWindowViewModel.AllowStart)
@@ -34,7 +37,7 @@ namespace CoJourney.App
                 this.Close();
             }
             else
-            {Show(); }
+            {Show(); }*/
             
         }
     }
