@@ -248,5 +248,60 @@ namespace CoJourney.BL.Tests
             
             await Assert.ThrowsAsync<InvalidOperationException>(() => dbxAssert.Journeys.SingleAsync(Journey => Journey.Id == Journey.Id));
         }
+
+        [Fact]
+        public async Task delete_user_from_journey()
+        {
+            var user = new UsersDetailModel
+            (
+                Name: "Abraham",
+                Surname: "LoutColn",
+                State: "Nemam cas ani penize"
+            )
+            {
+                OwnedCars =
+                {
+                    new CarDetailModel(
+                        Producer: CarSeeds.Golf.Producer,
+                        ModelName: CarSeeds.Golf.ModelName,
+                        FirstRegistrationDate: CarSeeds.Golf.FirstRegistrationDate,
+                        Capacity: CarSeeds.Golf.Capacity)
+
+                }
+            };
+            var returnedUser = await _facadeUserSUT.SaveAsync(user);
+            FixCarIds(user,returnedUser);
+            var user1 = await _facadeUserSUT.GetAsync(UserSeeds.Felos.Id);
+            var user2 = await _facadeUserSUT.GetAsync(UserSeeds.Patejdl.Id);
+            var journey = new JourneyDetailModel
+            (StartLocation: JourneySeeds.Journey1.StartLocation,
+                TargetLocation: JourneySeeds.Journey1.TargetLocation,
+                BeginTime: JourneySeeds.Journey1.BeginTime,
+                DriverId: user.Id,
+                CarId: user.OwnedCars[0].Id)
+            {
+                CoRiders = {
+                    new UsersDetailModel(
+                    Name: "Jean Luc",
+                    Surname: "Piccard",
+                    State: "Admiral hviezdnej flotily"
+                    ),
+                    new UsersDetailModel(
+                        Name: "xhubaq00",
+                        Surname: "Piccard",
+                        State: "Admiral hviezdnej flotily"
+                    ),
+
+                }
+            };
+
+            var returnedJourney = await _facadeJourneySUT.SaveAsync(journey);
+            var updateJourney = await _facadeJourneySUT.GetAsync(returnedJourney.Id);
+            var Copilot = updateJourney.CoRiders[1];
+            int x = updateJourney.CoRiders.IndexOf(Copilot);
+            updateJourney.CoRiders.Remove(updateJourney.CoRiders[x]);
+            //var finnalJourney = await _facadeJourneySUT.SaveAsync(updateJourney);
+            DeepAssert.Equal(1, updateJourney.CoRiders.Count);
+        }
     } 
 }
