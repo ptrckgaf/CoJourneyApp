@@ -51,7 +51,12 @@ namespace CoJourney.BL.Tests
                     BeginTime: JourneySeeds.Journey1.BeginTime,
                     DriverId: returnedUser.Id,
                     CarId: returnedUser.OwnedCars[0].Id
-                );
+                )
+            {
+                CarCapacity = returnedUser.OwnedCars[0].Capacity,
+                DriverName = returnedUser.Name,
+                DriverSurname = returnedUser.Surname
+            };
             var returnedJourney = await _facadeJourneySUT.SaveAsync(Journey);
             Journey.Id = returnedJourney.Id;
             //Assert

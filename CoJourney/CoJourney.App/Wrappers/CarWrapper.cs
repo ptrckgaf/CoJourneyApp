@@ -54,7 +54,7 @@ namespace CoJourney.App.Wrappers
                 yield return new ValidationResult($"{nameof(ModelName)} is required", new[] { nameof(ModelName) });
             }
 
-            if (Capacity is null && Capacity <= 0)
+            if (Capacity is null || Capacity < 1)
             {
                 yield return new ValidationResult($"{nameof(Capacity)} is required", new[] { nameof(Capacity) });
             }
