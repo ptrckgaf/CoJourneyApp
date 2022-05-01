@@ -43,12 +43,14 @@ namespace CoJourney.App
 
             services.Configure<DALSettings>(configuration.GetSection("CoJourney:DAL"));
 
+
             services.AddSingleton<IDbContextFactory<CoJourneyDbContext>>(provider =>
             {
                 var dalSettings = provider.GetRequiredService<IOptions<DALSettings>>().Value;
                 return new SqlServerDbContextFactory(dalSettings.ConnectionString!, dalSettings.SkipMigrationAndSeedDemoData);
             });
 
+            services.AddSingleton<Views.LoginWindow>();
             services.AddSingleton<MainWindow>();
 
             //services.AddSingleton<IMessageDialogService, MessageDialogService>();
@@ -62,6 +64,8 @@ namespace CoJourney.App
             services.AddSingleton<IInvitationListViewModel, InvitationListViewModel>();
             services.AddFactory<IUserDetailViewModel, UserDetailViewModel>();
             services.AddFactory<ICarDetailViewModel, CarDetailViewModel>();
+
+            services.AddSingleton<LoginWindowViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -84,10 +88,8 @@ namespace CoJourney.App
                     await dbx.Database.MigrateAsync();
                 }
             }
-
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-
+            _host.Services.GetRequiredService<MainWindow>();
+            //mainWindow.Show(); !!Ne
             base.OnStartup(e);
         }
 

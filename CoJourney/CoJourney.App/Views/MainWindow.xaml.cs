@@ -22,10 +22,20 @@ namespace CoJourney.App
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(MainViewModel mainViewModel)
-        {
+        public MainWindow(MainViewModel mainViewModel, BL.Facades.UsersFacade userfacade, Services.IMediator mediator)
+        {   
             InitializeComponent();
             DataContext = mainViewModel;
+            var loginWindowViewModel = new LoginWindowViewModel(userfacade, mediator);
+            LoginWindow loginWindow = new LoginWindow(userfacade, loginWindowViewModel);
+            loginWindow.ShowDialog();
+            if (! loginWindowViewModel.AllowStart)
+            {
+                this.Close();
+            }
+            else
+            {Show(); }
+            
         }
     }
 }

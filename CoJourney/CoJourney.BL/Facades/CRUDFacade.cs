@@ -75,5 +75,4 @@ public class CRUDFacade<TEntity, TListModel, TDetailModel>
             .Where(e => e.OwnerId == userId);
         return await _mapper.ProjectTo<CarListModel>(query).ToArrayAsync().ConfigureAwait(false);
     }
-
 }
