@@ -10,7 +10,7 @@ public static class InvitationSeeds
         Id: Guid.Parse(input: "92d5c8db-365f-47e4-b20b-d7c82dce6704"),
         Accepted: null,
         SenderUserId: UserSeeds.User1.Id,
-        ReceiverId: UserSeeds.User2.Id,
+        ReceiverUserId: UserSeeds.User2.Id,
         JourneyId: JourneySeeds.Journey1.Id
     );
 

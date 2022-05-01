@@ -66,6 +66,23 @@ public class CRUDFacade<TEntity, TListModel, TDetailModel>
 
         return (await GetAsync(entity.Id).ConfigureAwait(false))!;
     }
+    public async Task<IEnumerable<CarListModel>> GetMyCarsAsync(Guid userId)
+    {
+        await using var uow = _unitOfWorkFactory.Create();
+        var query = uow
+            .GetRepository<CarEntity>()
+            .Get()
+            .Where(e => e.OwnerId == userId);
+        return await _mapper.ProjectTo<CarListModel>(query).ToArrayAsync().ConfigureAwait(false);
+    }
 
-
+    public async Task<IEnumerable<CarEventListModel>> GetMyCarEventsAsync(Guid institutorId)
+    {
+        await using var uow = _unitOfWorkFactory.Create();
+        var query = uow
+            .GetRepository<CarEventEntity>()
+            .Get()
+            .Where(e => e.InstitutorId == institutorId);
+        return await _mapper.ProjectTo<CarEventListModel>(query).ToArrayAsync().ConfigureAwait(false);
+    }
 }

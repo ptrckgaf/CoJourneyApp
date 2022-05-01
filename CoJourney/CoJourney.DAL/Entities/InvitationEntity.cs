@@ -12,7 +12,7 @@ namespace CoJourney.DAL.Entities
         bool? Accepted, //pokud je accepted null, nebylo na zadost odpovezeno
 
         Guid SenderUserId,
-        Guid ReceiverId,
+        Guid ReceiverUserId,
         Guid JourneyId
     ) : IEntityPart
     {

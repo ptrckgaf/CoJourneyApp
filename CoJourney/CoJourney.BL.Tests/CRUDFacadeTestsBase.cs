@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
+using CoJourney.BL.Models;
 using CoJourney.Common.Tests;
 using CoJourney.Common.Tests.Factories;
 using CoJourney.DAL;
@@ -59,5 +61,40 @@ public class  CRUDFacadeTestsBase : IAsyncLifetime
     {
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         await dbx.Database.EnsureDeletedAsync();
+    }
+  
+    public static void FixInvitationIds(InvitationDetailModel expectedModel, InvitationDetailModel returnedModel)
+    {
+        expectedModel.Id = returnedModel.Id;
+        expectedModel.JourneyBeginTime = returnedModel.JourneyBeginTime;
+        expectedModel.JourneyStartLocation = returnedModel.JourneyStartLocation;
+        expectedModel.JourneyTargetLocation = returnedModel.JourneyTargetLocation;
+        expectedModel.SenderUserName = returnedModel.SenderUserName;
+        expectedModel.SenderUserSurname = returnedModel.SenderUserSurname;
+    }
+
+    public static void FixEventIds(CarEventDetailModel expectedModel, CarEventDetailModel returnedModel)
+    {
+        expectedModel.Id = returnedModel.Id;
+    }
+    public static void FixCarIds(UsersDetailModel expectedModel, UsersDetailModel returnedModel)
+    {
+        expectedModel.Id = returnedModel.Id;
+
+        foreach (var carDetailModel in returnedModel.OwnedCars)
+        {
+            var carDetailModelExp = expectedModel.OwnedCars.FirstOrDefault(i =>
+                i.Producer == carDetailModel.Producer
+                && i.ModelName == carDetailModel.ModelName
+                && i.ImageURl == carDetailModel.ImageURl
+                && i.FirstRegistrationDate == carDetailModel.FirstRegistrationDate
+                && i.Capacity == carDetailModel.Capacity);
+
+            if (carDetailModelExp != null)
+            {
+                carDetailModelExp.Id = carDetailModel.Id;
+                carDetailModelExp.OwnerId = carDetailModel.OwnerId;
+            }
+        }
     }
 }

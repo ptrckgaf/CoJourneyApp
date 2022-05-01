@@ -24,7 +24,7 @@ namespace CoJourney.BL.Models
         public DateTime FirstRegistrationDate { get; set; } = FirstRegistrationDate;
 
         public int Capacity { get; set; } = Capacity;
-        public  Guid OwnerId = Guid.Empty;
+        public  Guid OwnerId { get; set; } = Guid.Empty;
 
         public string? ImageURl { get; set; }
 
@@ -35,10 +35,9 @@ namespace CoJourney.BL.Models
                 CreateMap<CarEntity, CarDetailModel>()
                     .ReverseMap()
                     .ForMember(entity => entity.Owner, expression => expression.Ignore())
-                    .ForMember(entity => entity.OwnerId, expression => expression.Ignore())
                     .ForMember(entity => entity.Journeys, expression => expression.Ignore());
             }
         }
-        public static CarDetailModel Empty => new(string.Empty, string.Empty, default, 0);
+        public static CarDetailModel Empty => new(string.Empty, string.Empty, DateTime.Now.AddYears(-10), 0);
     }
 }

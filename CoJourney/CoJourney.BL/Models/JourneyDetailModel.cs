@@ -23,17 +23,22 @@ namespace CoJourney.BL.Models
         public DateTime BeginTime { get; set; } = BeginTime;
 
         public Guid CarId { get; set; } = CarId;
-
+        public  int CarCapacity { get; set; }
         public Guid DriverId { get; set; } = DriverId;
-
+        public string DriverName { get; set; }
+        public string DriverSurname { get; set; }
+        public List<UsersDetailModel> CoRiders { get; init; } = new ();
         public class MapperProfile : Profile
         {
             public MapperProfile()
             {
                 CreateMap<JourneyEntity, JourneyDetailModel>()
                     .ReverseMap()
-                    .ForMember(entity => entity.DriverId, expression => expression.Ignore());
+                    .ForMember(entity => entity.Car, expression => expression.Ignore())
+                    .ForMember(entity => entity.Driver, expression => expression.Ignore());
             }
         }
+
+        public static readonly JourneyDetailModel Empty = new(default, default, DateTime.Now, default, default);
     }
 }

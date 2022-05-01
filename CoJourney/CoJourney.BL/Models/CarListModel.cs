@@ -17,7 +17,8 @@ namespace CoJourney.BL.Models
 
         public int Capacity { get; set; } = Capacity;
 
-        public string? ImageURl { get; set; } 
+        public string? ImageURl { get; set; }
+        public Guid OwnerId { get; set; }
 
         public class MapperProfile : Profile
         {

@@ -11,9 +11,11 @@ namespace CoJourney.DAL.Entities
         DateTime BeginTime,
         DateTime EndTime,
         string Name,
-        string TargetLocation
+        string TargetLocation,
+        Guid InstitutorId
     ) : IEntityPart
     {
         public ICollection<JourneyEntity> Journeys { get; init; } = new List<JourneyEntity>();
+        public UserEntity? Institutor { get; init; }
     }
 }

@@ -11,7 +11,7 @@ public static class CarSeeds
         Producer: "Fiat",
         ModelName: "Multipla",
         FirstRegistrationDate: DateTime.Parse("5/1/2008 8:30:52 AM", System.Globalization.CultureInfo.InvariantCulture),
-        ImageUrl: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Fiat_Multipla_%282002%29_%2829392161886%29.jpg",
+        ImageUrl: "https://www.portalridice.cz/data/car-vehicle/photos/orig/236395642-5203586706327454-8589254344553112158-n.jpg",
         Capacity: 5,
         OwnerId: UserSeeds.User1.Id
 

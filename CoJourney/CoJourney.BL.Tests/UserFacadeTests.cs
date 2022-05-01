@@ -43,9 +43,9 @@ namespace CoJourney.BL.Tests
         [Fact]
         public async Task GetById_SeededFelos()
         {
-            var ingredient = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
+            var user = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
 
-            DeepAssert.Equal(Mapper.Map<UsersDetailModel>(UserSeeds.Felos), ingredient);
+            DeepAssert.Equal(Mapper.Map<UsersDetailModel>(UserSeeds.Felos), user);
         }
 
         
@@ -61,7 +61,6 @@ namespace CoJourney.BL.Tests
         public async Task SeededFelos_DeleteById_Deleted()
         {
             await _facadeSUT.DeleteAsync(UserSeeds.Felos.Id);
-
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             Assert.False(await dbxAssert.Users.AnyAsync(i => i.Id == UserSeeds.Felos.Id));
         }
@@ -86,7 +85,7 @@ namespace CoJourney.BL.Tests
             DeepAssert.Equal(user, Mapper.Map<UsersDetailModel>(userFromDb));
         }
         [Fact]
-        public async Task SeededFelos_InsertOrUpdate_UserUpdated()
+        public async Task SeededFelos_InsertOrUpdate_UserUpdateCarAdd()
         {
             //Arrange
             var user = new UsersDetailModel
@@ -95,21 +94,59 @@ namespace CoJourney.BL.Tests
                 Surname: UserSeeds.Felos.Surname,
                 State: UserSeeds.Felos.State
             )
-            {
+            {   
+                OwnedCars = {
+                    new CarDetailModel(
+                        Producer:CarSeeds.Picaso.Producer,
+                        ModelName:CarSeeds.Picaso.ModelName,
+                        FirstRegistrationDate:CarSeeds.Picaso.FirstRegistrationDate,
+                        Capacity:CarSeeds.Picaso.Capacity)
+                },
                 Id = UserSeeds.Felos.Id
             };
             user.Name += " - UPDATED";
             user.Surname += " - UPDATED";
             user.State += " - UPDATED";
             user.ImageUrl += "https://www.iconsdb.com/icons/preview/red/new-xxl.png";
+            
+            
+            //Act
+            var returnedUser =  await _facadeSUT.SaveAsync(user);
+            FixCarIds(user, returnedUser);
+            //Assert
+            var userFromDb = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
+            DeepAssert.Equal(user, Mapper.Map<UsersDetailModel>(userFromDb));
+        }
+        [Fact]
+        public async Task SeededFelos_Delete_Deleted()
+        {
+            //Arrange
+            var user = new UsersDetailModel
+            (
+                Name: UserSeeds.Felos.Name,
+                Surname: UserSeeds.Felos.Surname,
+                State: UserSeeds.Felos.State
+            )
+            {
+                OwnedCars = {
+                    new CarDetailModel(
+                        Producer:CarSeeds.Picaso.Producer,
+                        ModelName:CarSeeds.Picaso.ModelName,
+                        FirstRegistrationDate:CarSeeds.Picaso.FirstRegistrationDate,
+                        Capacity:CarSeeds.Picaso.Capacity)
+                },
+                Id = UserSeeds.Felos.Id
+            };
+            var returnedUser = await _facadeSUT.SaveAsync(user);
+            FixCarIds(user, returnedUser);
+
 
             //Act
-            await _facadeSUT.SaveAsync(user);
+            await _facadeSUT.DeleteAsync(returnedUser.Id);
 
             //Assert
-            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-            var userFromDb = await dbxAssert.Users.SingleAsync(i => i.Id == user.Id);
-            DeepAssert.Equal(user, Mapper.Map<UsersDetailModel>(userFromDb));
+            var userFromDb = await _facadeSUT.GetAsync(UserSeeds.Felos.Id);
+            DeepAssert.Equal(userFromDb, null);
         }
     } 
 }
