@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:CoJourney.App.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
@@ -13,13 +14,21 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <TextBlock  Text="Moje události" FontSize="20" FontFamily="Arial black" Foreground="BlueViolet" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
 
-        <ListBox x:Name="RecipesListBox"
+        <ListBox x:Name="CarEventListBox"
                  Grid.Row="1"
-                 ItemsSource="{Binding CarEvents}">
-
+                 ItemsSource="{Binding CarEvents}"
+                 SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectedCarEventCommand}"
+                                           CommandParameter="{Binding ElementName=CarEventListBox, Path=SelectedItem}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -40,5 +49,13 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Content="Nová" Style="{StaticResource DetailButtons}" Command="{Binding NewCarEventCommand}"/>
+        </Grid>
     </Grid>
 </local:UserControlBase>

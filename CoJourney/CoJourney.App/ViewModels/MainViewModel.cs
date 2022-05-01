@@ -11,6 +11,7 @@ using CoJourney.App.Views;
 using CoJourney.App.Wrappers;
 using CoJourney.App.Commands;
 using CoJourney.BL.Models;
+using CoJourney.DAL.Entities;
 using CoJourney.DAL.Seeds;
 
 namespace CoJourney.App.ViewModels
@@ -22,6 +23,7 @@ namespace CoJourney.App.ViewModels
             IJourneyListViewModel journeyListViewModel, ICarEventListViewModel carEventListViewModel,
             IInvitationListViewModel invitationEventListViewModel, IFactory<IUserDetailViewModel> userDetailViewModelFactory,
             IFactory<ICarDetailViewModel> carDetailViewModelFactory, IFactory<IJourneyDetailViewModel> journeyDetailViewModelFactory,
+            IFactory<ICarEventDetailViewModel> carEventDetailViewModelFactory,
             IMediator mediator)
         {
             UserListViewModel = userListViewModel;
@@ -49,17 +51,20 @@ namespace CoJourney.App.ViewModels
             mediator.Register<NewMessage<CarWrapper>>(OnCarAdd);
             
             mediator.Register<SelectedMessage<JourneyWrapper>>(OnJourneySelected);
+            mediator.Register<NewMessage<JourneyWrapper>>(OnJourneyAdd);
+
+            mediator.Register<SelectedMessage<CarEventWrapper>>(OnCarEventSelected);
+            mediator.Register<NewMessage<CarEventWrapper>>(OnCarEventAdd);
             _mediator = mediator;
 
             _userDetailViewModelFactory = userDetailViewModelFactory;
             _carDetailViewModelFactory = carDetailViewModelFactory;
             _journeyDetailViewModelFactory = journeyDetailViewModelFactory;
-
-            loggedUser = UserSeeds.User1.Id;
-            carListViewModel.LoggedUser = loggedUser;
+            _carEventDetailViewModelFactory = carEventDetailViewModelFactory;
         }
 
-        public readonly Guid loggedUser;
+        public static readonly UserEntity myUser = UserSeeds.User2;
+        public UsersListModel LoggedUser { get; } = new (myUser.Name, myUser.Surname, myUser.ImageUrl){Id = myUser.Id};
 
         public ObservableCollection<IUserDetailViewModel> UserDetailViewModels { get; } =
             new ObservableCollection<IUserDetailViewModel>();
@@ -70,9 +75,11 @@ namespace CoJourney.App.ViewModels
         private readonly IFactory<IUserDetailViewModel> _userDetailViewModelFactory;
         private readonly IFactory<ICarDetailViewModel> _carDetailViewModelFactory;
         private readonly IFactory<IJourneyDetailViewModel> _journeyDetailViewModelFactory;
+        private readonly IFactory<ICarEventDetailViewModel> _carEventDetailViewModelFactory;
         private IUserDetailViewModel? SelectedUserViewModel { get; set; }
         private ICarDetailViewModel? SelectedCarViewModel { get; set; }
         private IJourneyDetailViewModel? SelectedJourneyViewModel { get; set; }
+        private ICarEventDetailViewModel? SelectedCarEventViewModel { get; set; }
         public UserListView UserListViewControl { get; } = new ();
         public CarListView CarListViewControl { get; } = new ();
         public JourneyListView JourneyListViewControl { get; } = new();
@@ -96,10 +103,15 @@ namespace CoJourney.App.ViewModels
         private void OnCarSelected(SelectedMessage<CarWrapper> message) => SetCarDetailModelView(message.Id);
         
         private void OnJourneySelected(SelectedMessage<JourneyWrapper> message) => SetJourneyDetailModelView(message.Id);
-        
+        private void OnJourneyAdd(NewMessage<JourneyWrapper> message) => SetJourneyDetailModelView(Guid.Empty);
+        private void OnCarEventAdd(NewMessage<CarEventWrapper> message) => SetCarEventDetailModelView(Guid.Empty);
+
+        private void OnCarEventSelected(SelectedMessage<CarEventWrapper> message) =>
+            SetCarEventDetailModelView(message.Id);
         public UserDetailView UserDetailViewControl { get; } = new ();
         public CarDetailView CarDetailViewControl { get; } = new();
         public JourneyDetailView JourneyDetailViewControl { get; } = new();
+        public CarEventDetailView CarEventDetailViewControl { get; } = new();
 
         private UserControl? _listControl;
         private UserControl? _modelControl;
@@ -130,6 +142,7 @@ namespace CoJourney.App.ViewModels
         {
             ListControl = CarListViewControl;
             ModelControl = null;
+            _mediator.Send(new SelectedMessage<CarListModel> { Id = LoggedUser.Id });
         }
         private void SetJourneyListView()
         {
@@ -140,6 +153,7 @@ namespace CoJourney.App.ViewModels
         {
             ListControl = CarEventListViewControl;
             ModelControl = null;
+            _mediator.Send(new SelectedMessage<CarEventListModel> { TargetId = LoggedUser.Id });
         }
         private void SetInvitationListView()
         {
@@ -177,7 +191,7 @@ namespace CoJourney.App.ViewModels
             SelectedCarViewModel = carDetail;
             CarDetailViewControl.DataContext = SelectedCarViewModel;
             ModelControl = CarDetailViewControl;
-            _mediator.Send(new LoadMessage<CarWrapper> {Id=id, TargetId = loggedUser});
+            _mediator.Send(new LoadMessage<CarWrapper> {Id=id, TargetId = LoggedUser.Id});
         }
 
         private void SetJourneyDetailModelView(Guid? id)
@@ -187,7 +201,17 @@ namespace CoJourney.App.ViewModels
             SelectedJourneyViewModel = JourneyDetail;
             JourneyDetailViewControl.DataContext = SelectedJourneyViewModel;
             ModelControl = JourneyDetailViewControl;
-            _mediator.Send(new LoadMessage<JourneyWrapper>{ Id = id, TargetId = loggedUser});
+            _mediator.Send(new LoadMessage<JourneyWrapper>{ Id = id, TargetId = LoggedUser.Id});
+        }
+
+        private void SetCarEventDetailModelView(Guid? id)
+        {
+            var CarEventDetail = _carEventDetailViewModelFactory.Create();
+
+            SelectedCarEventViewModel = CarEventDetail;
+            CarEventDetailViewControl.DataContext = SelectedCarEventViewModel;
+            ModelControl = CarEventDetailViewControl;
+            _mediator.Send(new LoadMessage<CarEventWrapper> { Id = id, TargetId = LoggedUser.Id });
         }
     }
 }

@@ -20,7 +20,10 @@ namespace CoJourney.App.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return DateTime.Parse(value.ToString());
+            DateTime toReturn;
+            if (DateTime.TryParse(value.ToString(), out toReturn))
+                return toReturn;
+            return null;
         }
     }
 }

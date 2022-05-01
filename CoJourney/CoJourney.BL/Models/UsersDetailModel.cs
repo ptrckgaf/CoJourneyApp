@@ -14,6 +14,7 @@ namespace CoJourney.BL.Models
         public string? ImageUrl { get; set; }
         public string State { get; set; } = State;
         public List<CarDetailModel> OwnedCars { get; init; } = new();
+        public List<JourneyDetailModel> CoRidingJourneys { get; init; } = new();
         public class MapperProfile : Profile
         {
             public MapperProfile()

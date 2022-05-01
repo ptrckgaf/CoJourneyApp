@@ -140,9 +140,9 @@
                     <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="120"/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="1" Style="{StaticResource DetailButtons}" Command="{Binding DeleteCommand}"
+                    <Button Grid.Column="1" Style="{StaticResource DetailButtons}" Command="{Binding JoinCommand}"
                             Content="Přidat se" Background="LightGreen" IsEnabled="{Binding CanJoin}"></Button>
-                    <Button Grid.Column="3" Style="{StaticResource DetailButtons}" Command="{Binding DeleteCommand}"
+                    <Button Grid.Column="3" Style="{StaticResource DetailButtons}" Command="{Binding LeaveCommand}"
                             Content="Odpojit se" Background="LightCoral" IsEnabled="{Binding IsNotMyJourney}"></Button>
                 </Grid>
                 

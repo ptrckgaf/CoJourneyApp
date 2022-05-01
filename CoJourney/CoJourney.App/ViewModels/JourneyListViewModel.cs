@@ -31,13 +31,11 @@ namespace CoJourney.App.ViewModels
             _mediator.Register<DeleteMessage<JourneyWrapper>>(JourneyDeleted);
 
             SelectedJourneyCommand = new RelayCommand<JourneyListModel>(SelectedJourney);
-            NewJourneyCommand = new RelayCommand(Nothing);
+            NewJourneyCommand = new RelayCommand(NewJourney);
         }
 
-        public void Nothing()
-        {
-            return;
-        }
+        public void NewJourney() => _mediator.Send(new NewMessage<JourneyWrapper>(){Id = Guid.Empty});
+        
         private async void JourneyUpdated(UpdateMessage<JourneyWrapper> _) => await LoadAsync();
         private async void JourneyDeleted(DeleteMessage<JourneyWrapper> _) => await LoadAsync();
         public ICommand SelectedJourneyCommand { get; }

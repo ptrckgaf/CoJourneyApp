@@ -30,6 +30,7 @@ namespace CoJourney.App.ViewModels
         private IFactory<IJourneyDetailViewModel> _journeyDetailViewModelFactory;
         public ObservableCollection<CarListModel> DriverCars { get; set; } = new();
         private readonly CarFacade _carFacade;
+        private readonly UsersFacade _userFacade;
         public JourneyDetailViewModel(
             JourneyFacade journeyFacade, CarFacade carFacade,
             IMediator mediator, UsersFacade userFacade,
@@ -37,6 +38,7 @@ namespace CoJourney.App.ViewModels
         {
             _journeyFacade = journeyFacade;
             _carFacade = carFacade;
+            _userFacade = userFacade;
             _mediator = mediator;
 
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
@@ -44,26 +46,48 @@ namespace CoJourney.App.ViewModels
             SelectedCarChangedCommand = new RelayCommand(SelectedCarChanged);
 
             _journeyDetailViewModelFactory = journeyDetailViewModelFactory;
+
             _mediator.Register<LoadMessage<JourneyWrapper>>(async message => await JourneyLoad(message));
+            LeaveCommand = new AsyncRelayCommand(LeaveJourney);
+            JoinCommand = new AsyncRelayCommand(JoinToJoureny);
         }
-        public Guid LoggedUser { get; set; } = Guid.Empty;
+        public Guid LoggedUser { get; 
+            set; } = Guid.Empty;
         public JourneyWrapper? Model { get; set; } = null;
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand SelectedCarChangedCommand { get; }
+        public ICommand JoinCommand { get; }
+        public ICommand LeaveCommand { get; }
         public CarListModel selectedCar { get; set; }
-        public bool IsMyJourney => (((Model == null)? Guid.Empty:Model.DriverId) == LoggedUser);
+        public bool IsMyJourney => ((((Model == null)? Guid.Empty:Model.DriverId) == LoggedUser) || Model == null || Model.Id == Guid.Empty);
         public bool IsNotMyJourney => !IsMyJourney;
         public bool? CanJoin
         {
             get => (Model == null? -1:Model.CarCapacity) > 0 && IsNotMyJourney;
         }
 
+        private async Task LoadCars(Guid ownerId)
+        {
+            var cars = await _carFacade.GetMyCarsAsync(ownerId);
+            DriverCars.AddRange(cars);
+        }
+
         private async Task JourneyLoad(LoadMessage<JourneyWrapper> message)
         {
+            if (message.TargetId != null)
+                LoggedUser = message.TargetId.Value;
             if (message.Id == Guid.Empty || message.Id is null)
             {
                 Model = new JourneyWrapper(JourneyDetailModel.Empty);
+                await LoadCars(LoggedUser);
+                if (DriverCars.Count != 0)
+                    selectedCar = DriverCars[0];
+                
+                Model.DriverId = LoggedUser;
+                UsersDetailModel? user = await _userFacade.GetAsync(LoggedUser) ?? UsersDetailModel.Empty;
+                Model.DriverName = user.Name;
+                Model.DriverSurname = user.Surname;
             }
             else
             {
@@ -72,9 +96,8 @@ namespace CoJourney.App.ViewModels
                 if (Model.DriverId != null)
                 {
                     DriverCars.Clear();
-                    var cars = await _carFacade.GetMyCarsAsync(Model.DriverId.Value);
-                    DriverCars.AddRange(cars);
-                    foreach (CarListModel car in cars)
+                    await LoadCars(Model.DriverId.Value);
+                    foreach (CarListModel car in DriverCars)
                     {
                         if (car.Id == Model.CarId)
                         {
@@ -82,13 +105,75 @@ namespace CoJourney.App.ViewModels
                             break;
                         }
                     }
-                    if (message.TargetId != null)
-                        LoggedUser = message.TargetId.Value;
                 }
             }
 
         }
 
+        private async Task LeaveJourney()
+        {
+            UsersDetailModel? usersDetail = await _userFacade.GetAsync(LoggedUser);
+            if (usersDetail == null)
+            {
+                MessageBox.Show("Nebylo možné, se odhlásit!",
+                    "Error!", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                return;
+            }
+
+            foreach (var journey in usersDetail.CoRidingJourneys)
+            {
+                if (journey.Id == Model.Id)
+                {
+                    usersDetail.CoRidingJourneys.Remove(journey);
+                    break;
+                }
+            }
+            usersDetail.CoRidingJourneys.Remove(Model);
+            try
+            {
+                await _userFacade.SaveAsync(usersDetail);
+            }
+            catch 
+            {
+                MessageBox.Show("Nebylo možné se Odhlásit.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            
+            foreach (var coRider in Model.CoRiders)
+            {
+                if (coRider.Id == LoggedUser)
+                {
+                    Model.CoRiders.Remove(coRider);
+                    break;
+                }
+            }
+            await SaveAsync();
+            MessageBox.Show("Odhlášení proběhlo úspěšně.", "Podařilo se", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        }
+
+        private async Task JoinToJoureny()
+        {
+            UsersDetailModel? usersDetail = await _userFacade.GetAsync(LoggedUser);
+            if (usersDetail == null)
+            {
+                MessageBox.Show("Nebylo možné, se do jízdy přidat!",
+                    "Error!", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                return;
+            }
+            usersDetail.CoRidingJourneys.Add(Model);
+            try
+            {
+                await _userFacade.SaveAsync(usersDetail);
+            }
+            catch
+            {
+                MessageBox.Show("Nebylo možné se registrovat.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            
+            await SaveAsync();
+            MessageBox.Show("Registrace proběhla úspěšně.", "Podařilo se", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        }
         public async Task SaveAsync()
         {
             if (Model == null)

@@ -44,7 +44,7 @@ namespace CoJourney.App.Wrappers
         }
         public int? EstimatedCapacity
         {
-            get => CarCapacity - CoRiders.Count - 1;
+            get => CarCapacity - (CoRiders == null? 0:CoRiders.Count) - 1;
         }
         public string? DriverName
         {
@@ -57,7 +57,10 @@ namespace CoJourney.App.Wrappers
             get => GetValue<string>();
             set => SetValue(value);
         }
-        public ICollection<UserEntity> CoRiders { get => GetValue<ICollection<UserEntity>>(); }
+        public ICollection<UsersDetailModel> CoRiders { 
+            get => GetValue<ICollection<UsersDetailModel>>();
+            set => SetValue(value);
+        }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

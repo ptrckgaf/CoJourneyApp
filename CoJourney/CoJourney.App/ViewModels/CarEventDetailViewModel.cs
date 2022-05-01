@@ -18,19 +18,21 @@ namespace CoJourney.App.ViewModels
     public class CarEventDetailViewModel : ViewModelBase, ICarEventDetailViewModel
     {
         private readonly IMediator _mediator;
-        private readonly CarEventFacade _CarEventFacade;
+        private readonly CarEventFacade _carEventFacade;
 
         public CarEventDetailViewModel(
             CarEventFacade CarEventFacade,
             IMediator mediator)
         {
-            _CarEventFacade = CarEventFacade;
+            _carEventFacade = CarEventFacade;
             _mediator = mediator;
 
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
             DeleteCommand = new AsyncRelayCommand(DeleteAsync);
-        }
 
+            mediator.Register<LoadMessage<CarEventWrapper>>(async message => await CarEventLoad(message));
+        }
+        public Guid? LoggedUserId { get; private set; }
         public CarEventWrapper? Model { get; private set; }
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
@@ -38,7 +40,7 @@ namespace CoJourney.App.ViewModels
 
         public async Task LoadAsync(Guid id)
         {
-            Model = await _CarEventFacade.GetAsync(id) ?? CarEventDetailModel.Empty;
+            Model = await _carEventFacade.GetAsync(id) ?? CarEventDetailModel.Empty;
             OnPropertyChanged();
         }
 
@@ -46,9 +48,12 @@ namespace CoJourney.App.ViewModels
         {
             if (Model == null)
                 throw new NoNullAllowedException("Null model nemůže být uložen ani upraven.");
-            
 
-            Model = await _CarEventFacade.SaveAsync(Model.Model);
+            if (Model.Id == Guid.Empty)
+            {
+                Model.InstitutorId = LoggedUserId;
+            }
+            Model = await _carEventFacade.SaveAsync(Model.Model);
             _mediator.Send(new UpdateMessage<CarEventWrapper> {Model = Model});
         }
 
@@ -67,7 +72,7 @@ namespace CoJourney.App.ViewModels
 
                 try
                 {
-                    await _CarEventFacade.DeleteAsync(Model!.Id);
+                    await _carEventFacade.DeleteAsync(Model!.Id);
                 }
                 catch
                 {
@@ -79,6 +84,21 @@ namespace CoJourney.App.ViewModels
                 {
                     Model = Model
                 });
+            }
+        }
+
+        private async Task CarEventLoad(LoadMessage<CarEventWrapper> message)
+        {
+            if (message.TargetId != null)
+                LoggedUserId = message.TargetId.Value;
+            if (message.Id == Guid.Empty || message.Id is null)
+            {
+                Model = new CarEventWrapper(CarEventDetailModel.Empty);
+            }
+            else
+            {
+                var carDetail = await _carEventFacade.GetAsync(message.Id.Value);
+                Model = carDetail;
             }
         }
     }

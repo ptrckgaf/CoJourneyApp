@@ -49,7 +49,7 @@
                         <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Source="https://img.myloview.cz/fototapety/user-icon-profile-symbol-modern-simple-vector-icon-for-website-design-mobile-app-ui-vector-illustration-700-201841897.jpg" ></Image>
+                    <Image Source="{Binding LoggedUser.ImageUrl}" ></Image>
 
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -59,8 +59,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Text="Jméno" FontSize="15" Foreground="White"></TextBlock>
-                        <TextBlock Grid.Row="1" Text="Příjmení" FontSize="15" Foreground="White"></TextBlock>
+                        <TextBlock Grid.Row="0" Text="{Binding LoggedUser.Name}" FontSize="15" Foreground="White"></TextBlock>
+                        <TextBlock Grid.Row="1" Text="{Binding LoggedUser.Surname}" FontSize="15" Foreground="White"></TextBlock>
                     </Grid>
                 </Grid>
         </Border>
